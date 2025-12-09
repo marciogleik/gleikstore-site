@@ -1,0 +1,83 @@
+// Gleikstore - Schema do Banco de Dados
+// Usando Prisma ORM com PostgreSQL
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+// Modelo de Usuário
+model User {
+  id        String   @id @default(uuid())
+  name      String
+  email     String   @unique
+  password  String   // Hash bcrypt
+  cpf       String   @unique
+  phone     String
+  address   String
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+
+  // Relacionamentos
+  devices      Device[]
+  documents    Document[]
+  profilePhoto ProfilePhoto?
+
+  @@map("users")
+}
+
+// Modelo de Dispositivo/Aparelho
+model Device {
+  id           String   @id @default(uuid())
+  userId       String
+  model        String   // Ex: "iPhone 15 Pro Max"
+  imei         String   // IMEI ou Número de Série
+  purchaseDate DateTime
+  warrantyEnd  DateTime // Data de fim da garantia
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  // Relacionamento
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("devices")
+}
+
+// Modelo de Documentos
+model Document {
+  id           String       @id @default(uuid())
+  userId       String
+  documentType DocumentType
+  fileUrl      String       // URL do arquivo no Supabase Storage
+  uploadedAt   DateTime     @default(now())
+
+  // Relacionamento
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("documents")
+}
+
+// Tipos de documento
+enum DocumentType {
+  RG
+  CPF
+  COMPROVANTE_ENDERECO
+  CONTRATO
+}
+
+// Modelo de Foto de Perfil
+model ProfilePhoto {
+  id         String   @id @default(uuid())
+  userId     String   @unique
+  fileUrl    String   // URL da foto no Supabase Storage
+  uploadedAt DateTime @default(now())
+
+  // Relacionamento
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@map("profile_photos")
+}
