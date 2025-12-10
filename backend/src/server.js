@@ -41,6 +41,11 @@ app.get('/api/health', (req, res) => {
   });
 });
 
+// Rota simples de ping (para uptime monitor)
+app.get('/api/ping', (req, res) => {
+  res.json({ pong: true, timestamp: new Date().toISOString() });
+});
+
 // Middleware de erro global
 app.use((err, req, res, next) => {
   console.error('Erro:', err);
