@@ -178,6 +178,7 @@ router.get('/me', authMiddleware, async (req, res) => {
         cpf: true,
         phone: true,
         address: true,
+        role: true,
         createdAt: true,
         updatedAt: true,
         profilePhoto: {
