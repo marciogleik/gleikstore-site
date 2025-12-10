@@ -190,4 +190,49 @@ router.delete('/:id', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/device/warranty/:imei
+ * Endpoint público para consultar garantia por IMEI
+ */
+router.get('/warranty/:imei', async (req, res) => {
+  try {
+    const { imei } = req.params;
+
+    const warranty = await prisma.warrantyTemplate.findUnique({
+      where: { imei },
+    });
+
+    if (!warranty) {
+      return res.status(404).json({
+        error: true,
+        message: 'Garantia não encontrada para este IMEI',
+      });
+    }
+
+    const today = new Date();
+    const warrantyEnd = new Date(warranty.warrantyEnd);
+
+    const diffMs = warrantyEnd.getTime() - today.getTime();
+    const daysRemaining = Math.max(0, Math.ceil(diffMs / (1000 * 60 * 60 * 24)));
+    const isActive = daysRemaining > 0;
+
+    return res.json({
+      warranty: {
+        model: warranty.model,
+        imei: warranty.imei,
+        purchaseDate: warranty.purchaseDate,
+        warrantyEnd: warranty.warrantyEnd,
+        daysRemaining,
+        isActive,
+      },
+    });
+  } catch (error) {
+    console.error('Erro em GET /api/device/warranty/:imei:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Erro ao consultar garantia',
+    });
+  }
+});
+
 module.exports = router;

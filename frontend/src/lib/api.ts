@@ -12,6 +12,7 @@ export interface User {
   cpf: string
   phone: string
   address: string
+  role?: 'USER' | 'ADMIN'
   createdAt: string
   updatedAt?: string
   profilePhoto?: {
@@ -35,6 +36,15 @@ export interface Document {
   documentType: 'RG' | 'CPF' | 'COMPROVANTE_ENDERECO' | 'CONTRATO'
   fileUrl: string
   uploadedAt: string
+}
+
+export interface Warranty {
+  model: string
+  imei: string
+  purchaseDate: string
+  warrantyEnd: string
+  daysRemaining: number
+  isActive: boolean
 }
 
 export interface AuthResponse {
@@ -107,6 +117,30 @@ export async function register(userData: {
     method: 'POST',
     body: JSON.stringify(userData),
   })
+}
+
+// ============ WARRANTY ============
+
+export async function getAdminWarrantyByImei(
+  imei: string
+): Promise<{ warranty: { id: string; imei: string; model: string; purchaseDate: string; warrantyEnd: string } }> {
+  return request(`/admin/warranty/${encodeURIComponent(imei)}`)
+}
+
+export async function saveAdminWarranty(data: {
+  imei: string
+  model: string
+  purchaseDate: string
+  warrantyEnd: string
+}): Promise<{ message: string; warranty: { id: string; imei: string; model: string; purchaseDate: string; warrantyEnd: string } }> {
+  return request('/admin/warranty', {
+    method: 'POST',
+    body: JSON.stringify(data),
+  })
+}
+
+export async function getWarrantyByImei(imei: string): Promise<{ warranty: Warranty }> {
+  return request(`/device/warranty/${encodeURIComponent(imei)}`)
 }
 
 export async function login(credentials: {

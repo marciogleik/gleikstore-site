@@ -5,9 +5,9 @@ import { Save, Smartphone, Hash, Calendar, Shield } from 'lucide-react'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
-import { getDevices, createDevice, updateDevice } from '@/lib/api'
-import type { Device } from '@/lib/api'
-import { formatDate, formatDateForInput, isWarrantyValid, daysUntilWarrantyEnd } from '@/lib/utils'
+import { getDevices, createDevice, updateDevice, getWarrantyByImei } from '@/lib/api'
+import type { Device, Warranty } from '@/lib/api'
+import { formatDate, isWarrantyValid, daysUntilWarrantyEnd } from '@/lib/utils'
 
 export default function DevicePage() {
   const [device, setDevice] = useState<Device | null>(null)
@@ -20,6 +20,7 @@ export default function DevicePage() {
     purchaseDate: '',
     warrantyEnd: '',
   })
+  const [warranty, setWarranty] = useState<Warranty | null>(null)
 
   useEffect(() => {
     const fetchDevice = async () => {
@@ -28,12 +29,19 @@ export default function DevicePage() {
         if (response.devices.length > 0) {
           const dev = response.devices[0]
           setDevice(dev)
-          setFormData({
-            model: dev.model,
-            imei: dev.imei,
-            purchaseDate: formatDateForInput(dev.purchaseDate),
-            warrantyEnd: formatDateForInput(dev.warrantyEnd),
-          })
+          setFormData((prev) => ({ ...prev, model: dev.model, imei: dev.imei }))
+
+          try {
+            const w = await getWarrantyByImei(dev.imei)
+            setWarranty(w.warranty)
+            setFormData((prev) => ({
+              ...prev,
+              purchaseDate: w.warranty.purchaseDate.substring(0, 10),
+              warrantyEnd: w.warranty.warrantyEnd.substring(0, 10),
+            }))
+          } catch (error) {
+            console.error('Nenhuma garantia encontrada para o IMEI cadastrado:', error)
+          }
         }
       } catch (error) {
         console.error('Erro ao buscar dispositivo:', error)
@@ -52,15 +60,41 @@ export default function DevicePage() {
 
     try {
       if (device) {
-        // Atualizar dispositivo existente
-        const response = await updateDevice(device.id, formData)
+        const response = await updateDevice(device.id, {
+          model: formData.model,
+          imei: formData.imei,
+        })
         setDevice(response.device)
-        setMessage({ type: 'success', text: 'Aparelho atualizado com sucesso!' })
       } else {
-        // Criar novo dispositivo
-        const response = await createDevice(formData)
+        const response = await createDevice({
+          model: formData.model,
+          imei: formData.imei,
+          // Datas não são mais informadas pelo cliente; usamos placeholders mínimos
+          purchaseDate: new Date().toISOString(),
+          warrantyEnd: new Date().toISOString(),
+        })
         setDevice(response.device)
-        setMessage({ type: 'success', text: 'Aparelho cadastrado com sucesso!' })
+      }
+
+      // Após salvar o aparelho, buscar garantia pelo IMEI
+      try {
+        const w = await getWarrantyByImei(formData.imei)
+        setWarranty(w.warranty)
+        setFormData((prev) => ({
+          ...prev,
+          purchaseDate: w.warranty.purchaseDate.substring(0, 10),
+          warrantyEnd: w.warranty.warrantyEnd.substring(0, 10),
+        }))
+        setMessage({ type: 'success', text: 'Aparelho vinculado e garantia carregada com sucesso!' })
+      } catch (error) {
+        setWarranty(null)
+        setMessage({
+          type: 'error',
+          text:
+            error instanceof Error
+              ? error.message
+              : 'Nenhuma garantia encontrada para este IMEI. Fale com a GLEIKSTORE para cadastrar.',
+        })
       }
     } catch (error) {
       setMessage({ 
@@ -88,32 +122,41 @@ export default function DevicePage() {
       </div>
 
       {/* Status da Garantia */}
-      {device && (
-        <Card className={`border ${
-          isWarrantyValid(device.warrantyEnd) 
-            ? 'bg-green-500/10 border-green-500/20' 
-            : 'bg-red-500/10 border-red-500/20'
-        }`}>
+      {warranty && (
+        <Card
+          className={`border ${
+            isWarrantyValid(warranty.warrantyEnd)
+              ? 'bg-green-500/10 border-green-500/20'
+              : 'bg-red-500/10 border-red-500/20'
+          }`}
+        >
           <CardContent className="py-6">
             <div className="flex items-center gap-4">
-              <div className={`p-3 rounded-xl ${
-                isWarrantyValid(device.warrantyEnd) ? 'bg-green-500/20' : 'bg-red-500/20'
-              }`}>
-                <Shield className={`w-6 h-6 ${
-                  isWarrantyValid(device.warrantyEnd) ? 'text-green-400' : 'text-red-400'
-                }`} />
+              <div
+                className={`p-3 rounded-xl ${
+                  isWarrantyValid(warranty.warrantyEnd) ? 'bg-green-500/20' : 'bg-red-500/20'
+                }`}
+              >
+                <Shield
+                  className={`w-6 h-6 ${
+                    isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
+                  }`}
+                />
               </div>
               <div>
-                <h3 className={`font-semibold ${
-                  isWarrantyValid(device.warrantyEnd) ? 'text-green-400' : 'text-red-400'
-                }`}>
-                  {isWarrantyValid(device.warrantyEnd) ? 'Garantia Ativa' : 'Garantia Expirada'}
+                <h3
+                  className={`font-semibold ${
+                    isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
+                  }`}
+                >
+                  {isWarrantyValid(warranty.warrantyEnd) ? 'Garantia Ativa' : 'Garantia Expirada'}
                 </h3>
                 <p className="text-sm text-zinc-400">
-                  {isWarrantyValid(device.warrantyEnd) 
-                    ? `${daysUntilWarrantyEnd(device.warrantyEnd)} dias restantes • Válida até ${formatDate(device.warrantyEnd)}`
-                    : `Expirou em ${formatDate(device.warrantyEnd)}`
-                  }
+                  {isWarrantyValid(warranty.warrantyEnd)
+                    ? `${daysUntilWarrantyEnd(warranty.warrantyEnd)} dias restantes • Válida até ${formatDate(
+                        warranty.warrantyEnd,
+                      )}`
+                    : `Expirou em ${formatDate(warranty.warrantyEnd)}`}
                 </p>
               </div>
             </div>
@@ -167,29 +210,27 @@ export default function DevicePage() {
                 />
               </div>
 
-              {/* Data da Compra */}
+              {/* Data da Compra (somente leitura, vem do painel admin) */}
               <div className="relative">
                 <Calendar className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                 <Input
                   type="date"
                   placeholder="Data da compra"
                   value={formData.purchaseDate}
-                  onChange={(e) => setFormData({ ...formData, purchaseDate: e.target.value })}
                   className="pl-12"
-                  required
+                  disabled
                 />
               </div>
 
-              {/* Garantia até */}
+              {/* Garantia até (somente leitura, vem do painel admin) */}
               <div className="relative">
                 <Shield className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-500" />
                 <Input
                   type="date"
                   placeholder="Garantia válida até"
                   value={formData.warrantyEnd}
-                  onChange={(e) => setFormData({ ...formData, warrantyEnd: e.target.value })}
                   className="pl-12"
-                  required
+                  disabled
                 />
               </div>
             </div>

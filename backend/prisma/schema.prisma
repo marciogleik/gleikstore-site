@@ -83,6 +83,19 @@ model ProfilePhoto {
   @@map("profile_photos")
 }
 
+// Tabela de Garantias por IMEI (independente de usuário)
+model WarrantyTemplate {
+  id           String   @id @default(uuid())
+  imei         String   @unique
+  model        String
+  purchaseDate DateTime
+  warrantyEnd  DateTime
+  createdAt    DateTime @default(now())
+  updatedAt    DateTime @updatedAt
+
+  @@map("warranty_templates")
+}
+
 // Papel do usuário
 enum Role {
   USER

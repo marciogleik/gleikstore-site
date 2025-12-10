@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { User, Smartphone, FileText, Camera, LogOut, Home } from 'lucide-react'
+import { User, Smartphone, FileText, Camera, LogOut, Home, Shield } from 'lucide-react'
 import { getMe, removeToken } from '@/lib/api'
 import type { User as UserType } from '@/lib/api'
 
@@ -94,6 +94,21 @@ export default function DashboardLayout({
               </Link>
               
               <div className="border-t border-zinc-800 my-4" />
+
+              {/* Link de admin, apenas para usuários ADMIN */}
+              {user?.role === 'ADMIN' && (
+                <>
+                  <Link
+                    href="/admin/garantias"
+                    className="flex items-center gap-3 px-4 py-3 text-amber-400 hover:text-black hover:bg-amber-400 rounded-xl transition-all"
+                  >
+                    <Shield className="w-5 h-5" />
+                    Painel de garantias
+                  </Link>
+
+                  <div className="border-t border-zinc-800 my-4" />
+                </>
+              )}
 
               {navItems.map((item) => (
                 <Link
