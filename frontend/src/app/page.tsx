@@ -1,33 +1,21 @@
-import Link from 'next/link'
+import { MainHeader } from '@/components/layout/MainHeader'
 
 export default function Home() {
   const whatsappNumber = '5561982195532'
-  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Vim pelo site da Gleikstore`
+  const whatsappLink = `https://wa.me/${whatsappNumber}?text=Olá! Vim pelo site da GLEIKSTORE`
 
   return (
     <main className="min-h-screen bg-black text-white">
-      {/* Navbar */}
-      <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/10">
-        <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-          <span className="text-xl font-semibold tracking-tight">
-            Gleik<span className="text-gray-500">store</span>
-          </span>
-          <Link 
-            href="/login" 
-            className="px-4 py-2 text-sm border border-white/20 rounded-full hover:bg-white hover:text-black transition-all"
-          >
-            Entrar
-          </Link>
-        </div>
-      </nav>
+      {/* Header compartilhado */}
+      <MainHeader />
 
       {/* Hero */}
-      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-20">
-        <h1 className="text-5xl md:text-7xl font-bold tracking-tight mb-6">
-          iPhones Premium
+      <section className="min-h-screen flex flex-col items-center justify-center text-center px-6 pt-24">
+        <h1 className="text-3xl md:text-5xl font-semibold tracking-tight mb-4 max-w-2xl">
+          Tecnologia Premium ao Seu Alcance
         </h1>
         <p className="text-lg md:text-xl text-gray-400 max-w-xl mb-10">
-          Qualidade garantida, preços justos e atendimento excepcional.
+          iPhones selecionados com rigor, garantia real e atendimento humano em cada etapa.
         </p>
         <a
           href={whatsappLink}

@@ -2,20 +2,24 @@ import type { Metadata } from 'next'
 import { Inter } from 'next/font/google'
 import './globals.css'
 
-const inter = Inter({ 
+const inter = Inter({
   subsets: ['latin'],
   display: 'swap',
-  variable: '--font-inter'
+  variable: '--font-inter',
 })
 
 export const metadata: Metadata = {
-  title: 'Gleikstore | iPhones Premium com Garantia',
-  description: 'A melhor loja de iPhones seminovos e novos. Aparelhos originais, testados e com garantia. Atendimento premium e entrega imediata.',
-  keywords: 'iphone, apple, seminovo, novo, garantia, gleikstore, smartphone, celular',
+  title: 'GLEIKSTORE | Tecnologia Premium ao Seu Alcance',
+  description:
+    'GLEIKSTORE | Tecnologia Premium ao Seu Alcance. iPhones premium com garantia e atendimento especializado.',
+  keywords: 'gleikstore, iphone, tecnologia premium, apple, seminovo, smartphone',
   authors: [{ name: 'Gleikstore' }],
+  icons: {
+    icon: '/favicon.ico',
+  },
   openGraph: {
-    title: 'Gleikstore | iPhones Premium com Garantia',
-    description: 'A melhor loja de iPhones seminovos e novos. Aparelhos originais, testados e com garantia.',
+    title: 'GLEIKSTORE | Tecnologia Premium ao Seu Alcance',
+    description: 'iPhones premium com garantia e atendimento especializado.',
     type: 'website',
   },
 }

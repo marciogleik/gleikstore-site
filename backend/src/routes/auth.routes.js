@@ -64,7 +64,8 @@ router.post('/register', async (req, res) => {
         password: hashedPassword,
         cpf,
         phone,
-        address
+        address,
+        // role será USER por padrão definido no Prisma
       },
       select: {
         id: true,
@@ -73,8 +74,9 @@ router.post('/register', async (req, res) => {
         cpf: true,
         phone: true,
         address: true,
-        createdAt: true
-      }
+        role: true,
+        createdAt: true,
+      },
     });
 
     // Gerar token JWT
@@ -116,7 +118,7 @@ router.post('/login', async (req, res) => {
 
     // Buscar usuário
     const user = await prisma.user.findUnique({
-      where: { email }
+      where: { email },
     });
 
     if (!user) {

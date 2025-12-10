@@ -50,8 +50,9 @@ const authMiddleware = async (req, res, next) => {
         cpf: true,
         phone: true,
         address: true,
-        createdAt: true
-      }
+        role: true,
+        createdAt: true,
+      },
     });
 
     if (!user) {

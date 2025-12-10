@@ -1,7 +1,8 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Save, User, Mail, Phone, MapPin, CreditCard } from 'lucide-react'
+import { Save, User, Mail, Phone, MapPin, CreditCard, Shield, Sparkles, FileText, MessageCircle } from 'lucide-react'
+import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
@@ -72,12 +73,84 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div>
-        <h1 className="text-3xl font-bold">Dados Pessoais</h1>
-        <p className="text-zinc-400 mt-2">Gerencie suas informações pessoais</p>
+    <div className="space-y-10">
+      {/* Hero da área de membros */}
+      <div className="space-y-3">
+        <h1 className="text-3xl font-bold">Área de membros</h1>
+        <p className="text-zinc-400 text-sm md:text-base max-w-2xl">
+          Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia,
+          organiza documentos e recebe benefícios e promoções selecionadas.
+        </p>
       </div>
 
+      {/* Hub de benefícios */}
+      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+        <Link href="/dashboard/device">
+          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
+            <CardContent className="py-5 flex flex-col gap-3">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-400">
+                <Shield className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="font-semibold">Verificar garantia</h2>
+                <p className="text-xs text-zinc-400 mt-1">
+                  Consulte o status da garantia do seu iPhone cadastrado e veja quantos dias restam.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="/dashboard/documents">
+          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
+            <CardContent className="py-5 flex flex-col gap-3">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-500/15 text-sky-400">
+                <FileText className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="font-semibold">Meus documentos</h2>
+                <p className="text-xs text-zinc-400 mt-1">
+                  Envie e organize seus documentos de forma segura para contratos e garantias.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <Link href="#" aria-disabled className="cursor-default">
+          <Card className="bg-zinc-900/60 border-zinc-800 h-full">
+            <CardContent className="py-5 flex flex-col gap-3">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-violet-500/15 text-violet-400">
+                <Sparkles className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="font-semibold">Promoções surpresa</h2>
+                <p className="text-xs text-zinc-400 mt-1">
+                  Em breve, condições especiais e upgrades exclusivos para membros.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </Link>
+
+        <a href="https://wa.me/5561982195532?text=Olá! Vim da área de membros GLEIKSTORE" target="_blank" rel="noopener noreferrer">
+          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
+            <CardContent className="py-5 flex flex-col gap-3">
+              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-400">
+                <MessageCircle className="w-5 h-5" />
+              </div>
+              <div>
+                <h2 className="font-semibold">Atendimento dedicado</h2>
+                <p className="text-xs text-zinc-400 mt-1">
+                  Fale diretamente com a GLEIKSTORE pelo WhatsApp para suporte e dúvidas.
+                </p>
+              </div>
+            </CardContent>
+          </Card>
+        </a>
+      </div>
+
+      {/* Bloco de dados pessoais */}
       <Card className="bg-zinc-900/50 border-zinc-800">
         <CardHeader>
           <CardTitle>Informações da Conta</CardTitle>

@@ -19,6 +19,7 @@ model User {
   cpf       String   @unique
   phone     String
   address   String
+  role      Role     @default(USER)
   createdAt DateTime @default(now())
   updatedAt DateTime @updatedAt
 
@@ -80,4 +81,10 @@ model ProfilePhoto {
   user User @relation(fields: [userId], references: [id], onDelete: Cascade)
 
   @@map("profile_photos")
+}
+
+// Papel do usuário
+enum Role {
+  USER
+  ADMIN
 }
