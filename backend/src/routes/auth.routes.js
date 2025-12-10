@@ -53,8 +53,8 @@ router.post('/register', async (req, res) => {
       });
     }
 
-    // Hash da senha
-    const hashedPassword = await bcrypt.hash(password, 10);
+    // Hash da senha (custo 8 para melhor desempenho em produção)
+    const hashedPassword = await bcrypt.hash(password, 8);
 
     // Criar usuário
     const user = await prisma.user.create({
