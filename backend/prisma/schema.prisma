@@ -24,9 +24,10 @@ model User {
   updatedAt DateTime @updatedAt
 
   // Relacionamentos
-  devices      Device[]
-  documents    Document[]
-  profilePhoto ProfilePhoto?
+  devices       Device[]
+  documents     Document[]
+  profilePhoto  ProfilePhoto?
+  cpfConsultas  CpfConsulta[]
 
   @@map("users")
 }
@@ -94,6 +95,25 @@ model WarrantyTemplate {
   updatedAt    DateTime @updatedAt
 
   @@map("warranty_templates")
+}
+
+// Histórico de consultas de CPF (SPC/SERASA)
+model CpfConsulta {
+  id            String   @id @default(uuid())
+  cpf           String
+  name          String?  // Nome retornado pela consulta
+  score         Int?     // Score de crédito (0-1000)
+  hasPendencies Boolean  @default(false) // Tem pendências financeiras?
+  status        String?  // Situação na RF: REGULAR, SUSPENSA, etc.
+  pendencies    String?  // Detalhes das pendências (JSON string)
+  rawData       String?  // Resposta completa da API (JSON string)
+  consultedAt   DateTime @default(now())
+  consultedBy   String   // ID do admin que consultou
+
+  // Relacionamento
+  admin User @relation(fields: [consultedBy], references: [id])
+
+  @@map("cpf_consultas")
 }
 
 // Papel do usuário

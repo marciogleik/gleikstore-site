@@ -3,7 +3,7 @@
 import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
-import { User, Smartphone, FileText, Camera, LogOut, Home, Shield } from 'lucide-react'
+import { User, Smartphone, FileText, Camera, LogOut, Home, Shield, Search } from 'lucide-react'
 import { getMe, removeToken } from '@/lib/api'
 import type { User as UserType } from '@/lib/api'
 
@@ -92,7 +92,7 @@ export default function DashboardLayout({
                 <Home className="w-5 h-5" />
                 Voltar ao site
               </Link>
-              
+
               <div className="border-t border-zinc-800 my-4" />
 
               {/* Link de admin, apenas para usuários ADMIN */}
@@ -104,6 +104,14 @@ export default function DashboardLayout({
                   >
                     <Shield className="w-5 h-5" />
                     Painel de garantias
+                  </Link>
+
+                  <Link
+                    href="/admin/consulta-cpf"
+                    className="flex items-center gap-3 px-4 py-3 text-violet-400 hover:text-black hover:bg-violet-400 rounded-xl transition-all"
+                  >
+                    <Search className="w-5 h-5" />
+                    Consulta CPF
                   </Link>
 
                   <div className="border-t border-zinc-800 my-4" />

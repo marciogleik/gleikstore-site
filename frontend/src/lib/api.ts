@@ -79,7 +79,7 @@ async function request<T>(
   options: RequestInit = {}
 ): Promise<T> {
   const token = getToken()
-  
+
   const headers: HeadersInit = {
     'Content-Type': 'application/json',
     ...options.headers,
@@ -142,6 +142,61 @@ export async function saveAdminWarranty(data: {
 export async function getWarrantyByImei(imei: string): Promise<{ warranty: Warranty }> {
   return request(`/device/warranty/${encodeURIComponent(imei)}`)
 }
+
+// ============ CPF CONSULTA (Admin) ============
+
+export interface CpfPendency {
+  tipo: string
+  valor: string
+  credor: string
+  data: string
+}
+
+export interface CpfConsultaResult {
+  consulta: {
+    id: string
+    cpf: string
+    name: string | null
+    score: number | null
+    hasPendencies: boolean
+    status: string | null
+    pendencies: CpfPendency[] | null
+    rawData: Record<string, unknown> | null
+    consultedAt: string
+    consultedBy: string
+  }
+  cliente: {
+    id: string
+    name: string
+    email: string
+    phone: string
+    createdAt: string
+  } | null
+  isDemo: boolean
+}
+
+export interface CpfConsultaHistoryItem {
+  id: string
+  cpf: string
+  name: string | null
+  score: number | null
+  hasPendencies: boolean
+  status: string | null
+  consultedAt: string
+  admin: {
+    name: string
+    email: string
+  }
+}
+
+export async function consultarCpf(cpf: string): Promise<CpfConsultaResult> {
+  return request<CpfConsultaResult>(`/admin/cpf/${encodeURIComponent(cpf)}`)
+}
+
+export async function getCpfHistory(): Promise<{ consultas: CpfConsultaHistoryItem[] }> {
+  return request<{ consultas: CpfConsultaHistoryItem[] }>('/admin/cpf/history')
+}
+
 
 export async function login(credentials: {
   email: string

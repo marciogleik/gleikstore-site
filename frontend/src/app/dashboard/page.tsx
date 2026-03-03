@@ -1,17 +1,18 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Save, User, Mail, Phone, MapPin, CreditCard, Shield, Sparkles, FileText, MessageCircle } from 'lucide-react'
+import { Save, User, Mail, Phone, MapPin, CreditCard, Shield, Sparkles, FileText, MessageCircle, Search } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
-import { getUser, updateUser } from '@/lib/api'
+import { getUser, updateUser, getMe } from '@/lib/api'
 import type { User as UserType } from '@/lib/api'
 import { formatCPF, formatPhone } from '@/lib/utils'
 
 export default function DashboardPage() {
   const [user, setUser] = useState<UserType | null>(null)
+  const [isAdmin, setIsAdmin] = useState(false)
   const [isLoading, setIsLoading] = useState(true)
   const [isSaving, setIsSaving] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
@@ -24,12 +25,13 @@ export default function DashboardPage() {
   useEffect(() => {
     const fetchUser = async () => {
       try {
-        const response = await getUser()
-        setUser(response.user)
+        const [userRes, meRes] = await Promise.all([getUser(), getMe()])
+        setUser(userRes.user)
+        setIsAdmin(meRes.user.role === 'ADMIN')
         setFormData({
-          name: response.user.name,
-          phone: formatPhone(response.user.phone),
-          address: response.user.address,
+          name: userRes.user.name,
+          phone: formatPhone(userRes.user.phone),
+          address: userRes.user.address,
         })
       } catch (error) {
         console.error('Erro ao buscar usuário:', error)
@@ -40,6 +42,7 @@ export default function DashboardPage() {
 
     fetchUser()
   }, [])
+
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault()
@@ -55,9 +58,9 @@ export default function DashboardPage() {
       setUser(response.user)
       setMessage({ type: 'success', text: 'Dados atualizados com sucesso!' })
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error instanceof Error ? error.message : 'Erro ao atualizar dados' 
+      setMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Erro ao atualizar dados'
       })
     } finally {
       setIsSaving(false)
@@ -133,6 +136,25 @@ export default function DashboardPage() {
           </Card>
         </Link>
 
+        {/* Card de Consulta CPF - apenas para admins */}
+        {isAdmin && (
+          <Link href="/admin/consulta-cpf">
+            <Card className="bg-zinc-900/60 border-zinc-800 hover:border-violet-500/40 hover:bg-zinc-900 transition-colors h-full">
+              <CardContent className="py-5 flex flex-col gap-3">
+                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-violet-500/15 text-violet-400">
+                  <Search className="w-5 h-5" />
+                </div>
+                <div>
+                  <h2 className="font-semibold">Consulta CPF</h2>
+                  <p className="text-xs text-zinc-400 mt-1">
+                    Verifique score de crédito e pendências financeiras (SPC/SERASA).
+                  </p>
+                </div>
+              </CardContent>
+            </Card>
+          </Link>
+        )}
+
         <a href="https://wa.me/5561982195532?text=Olá! Vim da área de membros GLEIKSTORE" target="_blank" rel="noopener noreferrer">
           <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
             <CardContent className="py-5 flex flex-col gap-3">
@@ -159,11 +181,10 @@ export default function DashboardPage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {message.text && (
-              <div className={`p-4 rounded-xl text-sm ${
-                message.type === 'success' 
-                  ? 'bg-green-500/10 border border-green-500/20 text-green-400'
-                  : 'bg-red-500/10 border border-red-500/20 text-red-400'
-              }`}>
+              <div className={`p-4 rounded-xl text-sm ${message.type === 'success'
+                ? 'bg-green-500/10 border border-green-500/20 text-green-400'
+                : 'bg-red-500/10 border border-red-500/20 text-red-400'
+                }`}>
                 {message.text}
               </div>
             )}
