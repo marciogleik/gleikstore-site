@@ -15,12 +15,35 @@ const router = express.Router();
 router.use(authMiddleware, adminMiddleware);
 
 /**
- * Simula uma consulta de crédito para demonstração.
- * Quando a API real (API Brasil, Netrin, etc.) for configurada,
- * substituir esta função pela chamada real.
+ * Consulta de CPF - Mix de Real (Cadastro) e Demo (Crédito)
+ * Se tiver CADASTRO_API_KEY, busca nome real na Receita.
+ * Se tiver CREDIT_API_KEY, busca score real.
  */
 async function consultarCpfApi(cpf) {
-  // Se tiver API key configurada, faz consulta real
+  let name = 'Nome não encontrado';
+  let status = 'DESCONHECIDA';
+  let score = 0;
+  let hasPendencies = false;
+  let pendencies = [];
+  let rawData = { source: 'mixed' };
+
+  // 1. Tentar consulta de CADASTRO (Grátis/Barato - Receita Federal)
+  // Exemplo usando APICPF.com (Plano Free disponível)
+  if (process.env.CADASTRO_API_KEY) {
+    try {
+      const cadResponse = await fetch(`https://api.apicpf.com/v1/cpf/${cpf}?token=${process.env.CADASTRO_API_KEY}`);
+      if (cadResponse.ok) {
+        const cadData = await cadResponse.json();
+        name = cadData.nome || name;
+        status = cadData.situacao || status;
+        rawData.cadastro = cadData;
+      }
+    } catch (e) {
+      console.error('Erro na consulta cadastral:', e.message);
+    }
+  }
+
+  // 2. Tentar consulta de CRÉDITO (Paga - SPC/Serasa)
   if (process.env.CREDIT_API_KEY && process.env.CREDIT_API_URL) {
     try {
       const response = await fetch(process.env.CREDIT_API_URL, {
@@ -32,60 +55,53 @@ async function consultarCpfApi(cpf) {
         body: JSON.stringify({ cpf }),
       });
 
-      if (!response.ok) {
-        throw new Error('Erro na API de consulta de crédito');
+      if (response.ok) {
+        const data = await response.json();
+        score = data.score || data.pontuacao || 0;
+        hasPendencies = data.hasPendencies || data.restricoes || false;
+        pendencies = data.pendencies || data.detalhes || [];
+        rawData.credito = data;
+        if (data.name || data.nome) name = data.name || data.nome;
       }
-
-      const data = await response.json();
-      return {
-        name: data.name || data.nome || null,
-        score: data.score || data.pontuacao || null,
-        hasPendencies: data.hasPendencies || data.restricoes || false,
-        status: data.status || data.situacao || 'DESCONHECIDA',
-        pendencies: data.pendencies || data.detalhes || null,
-        rawData: data,
-      };
     } catch (error) {
-      console.error('Erro na consulta real de CPF:', error);
-      throw error;
+      console.error('Erro na consulta de crédito real:', error.message);
     }
-  }
+  } else {
+    // MODO DEMONSTRAÇÃO para CRÉDITO
+    const cpfClean = cpf.replace(/\D/g, '');
+    const seed = parseInt(cpfClean.substring(0, 4)) || 500;
 
-  // MODO DEMONSTRAÇÃO: retorna dados simulados
-  const cpfClean = cpf.replace(/\D/g, '');
-  
-  // Gera score baseado nos dígitos do CPF para consistência
-  const seed = parseInt(cpfClean.substring(0, 4)) || 500;
-  const score = Math.min(1000, Math.max(100, (seed * 7) % 900 + 100));
+    // Nome simulado se não veio da API de cadastro
+    if (name === 'Nome não encontrado') {
+      name = `Simulação: ${cpfClean.substring(0, 3)}.***.***-${cpfClean.substring(9)}`;
+    }
 
-  // CPFs terminados em número par = sem pendência, ímpar = com pendência
-  const lastDigit = parseInt(cpfClean.charAt(cpfClean.length - 1)) || 0;
-  const hasPendencies = lastDigit % 2 !== 0;
+    score = Math.min(1000, Math.max(100, (seed * 7) % 900 + 100));
+    const lastDigit = parseInt(cpfClean.charAt(cpfClean.length - 1)) || 0;
+    hasPendencies = lastDigit % 2 !== 0;
 
-  const pendenciesList = hasPendencies
-    ? [
+    if (hasPendencies) {
+      pendencies = [
         {
           tipo: 'Atraso de pagamento',
-          valor: `R$ ${(seed * 3.27).toFixed(2)}`,
-          credor: 'Instituição Financeira XYZ',
-          data: '2024-08-15',
-        },
-        {
-          tipo: 'Protesto',
-          valor: `R$ ${(seed * 1.15).toFixed(2)}`,
-          credor: 'Empresa ABC Ltda',
-          data: '2024-06-22',
-        },
-      ]
-    : [];
+          valor: `R$ ${(seed * 1.5).toFixed(2)}`,
+          credor: 'Empresa Teste S.A.',
+          data: '2025-01-10',
+        }
+      ];
+    }
+
+    if (status === 'DESCONHECIDA') status = score > 400 ? 'REGULAR' : 'PENDENTE';
+    rawData.demo = true;
+  }
 
   return {
-    name: 'Nome Demonstração (API não configurada)',
+    name,
     score,
     hasPendencies,
-    status: score > 500 ? 'REGULAR' : 'ATENÇÃO',
-    pendencies: pendenciesList,
-    rawData: { mode: 'demo', cpf: cpfClean },
+    status,
+    pendencies,
+    rawData,
   };
 }
 

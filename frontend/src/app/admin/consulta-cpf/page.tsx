@@ -168,10 +168,15 @@ export default function ConsultaCpfPage() {
                 <div className="p-4 rounded-xl text-sm bg-amber-500/10 border border-amber-500/20 text-amber-400 flex items-start gap-3">
                     <Info className="w-5 h-5 shrink-0 mt-0.5" />
                     <div>
-                        <p className="font-semibold">Modo demonstração</p>
+                        <p className="font-semibold">Informação do Sistema</p>
                         <p className="text-amber-400/80 mt-1">
-                            API de crédito não configurada. Os dados exibidos são simulados.
-                            Para consultas reais, configure <code className="bg-amber-500/20 px-1.5 py-0.5 rounded text-xs">CREDIT_API_KEY</code> e <code className="bg-amber-500/20 px-1.5 py-0.5 rounded text-xs">CREDIT_API_URL</code> no .env do backend.
+                            {(result.consulta.rawData as any)?.source === 'mixed' && (result.consulta.rawData as any)?.demo
+                                ? "Os dados de crédito (Score/Dívidas) são simulados. O nome e a situação na Receita Federal podem ser reais se a chave de cadastro estiver configurada."
+                                : "A API de consulta de crédito não está configurada no servidor. Os dados exibidos abaixo são apenas para demonstração visual."
+                            }
+                        </p>
+                        <p className="text-xs text-amber-400/60 mt-2">
+                            Configure <code className="bg-amber-500/20 px-1 py-0.5 rounded">CADASTRO_API_KEY</code> ou <code className="bg-amber-500/20 px-1 py-0.5 rounded">CREDIT_API_KEY</code> no seu backend.
                         </p>
                     </div>
                 </div>
@@ -185,7 +190,12 @@ export default function ConsultaCpfPage() {
                         {/* Score Gauge */}
                         <Card className="bg-zinc-900/50 border-zinc-800 lg:col-span-1">
                             <CardContent className="py-8">
-                                <h3 className="text-sm uppercase text-zinc-400 text-center mb-4 tracking-wider">Score de Crédito</h3>
+                                <div className="flex items-center justify-center gap-2 mb-4">
+                                    <h3 className="text-sm uppercase text-zinc-400 tracking-wider">Score de Crédito</h3>
+                                    {(result?.isDemo || (result?.consulta?.rawData as any)?.demo) && (
+                                        <span className="px-1.5 py-0.5 rounded text-[10px] bg-zinc-800 text-zinc-500 border border-zinc-700 uppercase">Simulado</span>
+                                    )}
+                                </div>
                                 {consulta.score !== null ? (
                                     <ScoreGauge score={consulta.score} />
                                 ) : (
@@ -213,8 +223,8 @@ export default function ConsultaCpfPage() {
                                 {/* Situação e Pendências */}
                                 <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
                                     <div className={`p-4 rounded-xl border ${consulta.status === 'REGULAR'
-                                            ? 'bg-green-500/5 border-green-500/20'
-                                            : 'bg-amber-500/5 border-amber-500/20'
+                                        ? 'bg-green-500/5 border-green-500/20'
+                                        : 'bg-amber-500/5 border-amber-500/20'
                                         }`}>
                                         <p className="text-xs text-zinc-500 uppercase mb-1">Situação RF</p>
                                         <div className="flex items-center gap-2">
@@ -231,8 +241,8 @@ export default function ConsultaCpfPage() {
                                     </div>
 
                                     <div className={`p-4 rounded-xl border ${consulta.hasPendencies
-                                            ? 'bg-red-500/5 border-red-500/20'
-                                            : 'bg-green-500/5 border-green-500/20'
+                                        ? 'bg-red-500/5 border-red-500/20'
+                                        : 'bg-green-500/5 border-green-500/20'
                                         }`}>
                                         <p className="text-xs text-zinc-500 uppercase mb-1">Pendências</p>
                                         <div className="flex items-center gap-2">
