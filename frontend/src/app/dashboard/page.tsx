@@ -79,12 +79,52 @@ export default function DashboardPage() {
     <div className="space-y-10">
       {/* Hero da área de membros */}
       <div className="space-y-3">
-        <h1 className="text-3xl font-bold">Área de membros</h1>
+        <h1 className="text-3xl font-bold flex items-center gap-3">
+          {user?.name.includes('Sara') ? (
+            <>
+              Bem-vinda, {user.name.split(' ')[0]}! <Sparkles className="w-6 h-6 text-pink-400 animate-pulse" />
+            </>
+          ) : (
+            'Área de membros'
+          )}
+        </h1>
         <p className="text-zinc-400 text-sm md:text-base max-w-2xl">
-          Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia,
-          organiza documentos e recebe benefícios e promoções selecionadas.
+          {user?.name.includes('Sara') ? (
+            "Seu iPhone 16 Rosa (256GB) está sendo preparado com todo carinho. Preparamos uma experiência exclusiva para você acompanhar sua nova conquista."
+          ) : (
+            "Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia, organiza documentos e recebe benefícios e promoções selecionadas."
+          )}
         </p>
       </div>
+
+      {/* Seção Premium Especial para a Sara */}
+      {user?.name.includes('Sara') && (
+        <Card className="bg-gradient-to-br from-pink-500/10 via-zinc-900 to-zinc-900 border-pink-500/20 shadow-2xl shadow-pink-500/5">
+          <CardContent className="py-8">
+            <div className="flex flex-col md:flex-row items-center gap-8">
+              <div className="relative">
+                <div className="w-24 h-24 rounded-full bg-pink-500/20 flex items-center justify-center border border-pink-500/40">
+                  <span className="text-3xl">🎀</span>
+                </div>
+                <div className="absolute -bottom-1 -right-1 bg-emerald-500 w-6 h-6 rounded-full border-2 border-zinc-950 flex items-center justify-center">
+                  <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                </div>
+              </div>
+              <div className="flex-1 text-center md:text-left space-y-2">
+                <h3 className="text-xl font-bold text-pink-100">Status do seu Novo iPhone</h3>
+                <p className="text-zinc-400">Modelo: iPhone 16 256GB - Cor: Rosa</p>
+                <div className="w-full bg-zinc-800 rounded-full h-2 mt-4 overflow-hidden">
+                  <div className="bg-emerald-500 h-full w-[65%] animate-pulse" />
+                </div>
+                <p className="text-[10px] text-emerald-400 uppercase tracking-widest mt-2">✨ Preparando Envio VIP</p>
+              </div>
+              <Button variant="outline" className="border-pink-500/30 hover:bg-pink-500/10 text-pink-300">
+                Ver Certificado de Elite
+              </Button>
+            </div>
+          </CardContent>
+        </Card>
+      )}
 
       {/* Hub de benefícios */}
       <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
