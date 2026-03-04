@@ -27,16 +27,18 @@ async function consultarCpfApi(cpf) {
   let pendencies = [];
   let rawData = { source: 'mixed' };
 
-  // 1. Tentar consulta de CADASTRO (Grátis/Barato - Receita Federal)
-  // Exemplo usando APICPF.com (Plano Free disponível)
+  // 1. Tentar consulta de CADASTRO (APICPF.com)
   if (process.env.CADASTRO_API_KEY) {
     try {
-      const cadResponse = await fetch(`https://api.apicpf.com/v1/cpf/${cpf}?token=${process.env.CADASTRO_API_KEY}`);
+      const cadResponse = await fetch(`https://apicpf.com/api/consulta?cpf=${cpf}&api_key=${process.env.CADASTRO_API_KEY}`);
       if (cadResponse.ok) {
         const cadData = await cadResponse.json();
-        name = cadData.nome || name;
-        status = cadData.situacao || status;
+        // APICPF retorna campos como 'nome', 'genero', 'nascimento'
+        name = cadData.nome || cadData.name || name;
+        status = cadData.situacao || cadData.status || (cadData.nome ? 'REGULAR' : status);
         rawData.cadastro = cadData;
+      } else {
+        console.error('APICPF retornou erro:', cadResponse.status);
       }
     } catch (e) {
       console.error('Erro na consulta cadastral:', e.message);
