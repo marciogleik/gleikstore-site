@@ -1,4 +1,5 @@
 import { MainHeader } from '@/components/layout/MainHeader'
+import ProductCatalog from '@/components/landing/ProductCatalog'
 
 export default function Home() {
   const whatsappNumber = '5561982195532'
@@ -347,6 +348,8 @@ export default function Home() {
           </a>
         </div>
       </section>
+
+      <ProductCatalog />
 
       {/* ====== SOBRE ====== */}
       <section className="py-20 px-6 border-t border-white/5">

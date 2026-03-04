@@ -38,16 +38,30 @@ export function MainHeader() {
   return (
     <nav className="fixed top-0 left-0 right-0 z-50 bg-black/90 backdrop-blur-sm border-b border-white/10">
       <div className="max-w-6xl mx-auto px-6 py-4 flex items-center justify-between">
-        <Link href="/" className="flex items-center gap-2">
-          <img
-            src="/gleikstore-icon.png"
-            alt="Ícone GLEIKSTORE"
-            className="w-7 h-7"
-          />
-          <span className="text-xl font-semibold tracking-tight">
-            GLEIK<span className="text-gray-500">STORE</span>
-          </span>
-        </Link>
+        <div className="flex items-center gap-8">
+          <Link href="/" className="flex items-center gap-2">
+            <img
+              src="/gleikstore-icon.png"
+              alt="Ícone GLEIKSTORE"
+              className="w-7 h-7"
+            />
+            <span className="text-xl font-semibold tracking-tight text-white">
+              GLEIK<span className="text-gray-500">STORE</span>
+            </span>
+          </Link>
+
+          <div className="hidden md:flex items-center gap-6">
+            <Link href="/#catalogo" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+              Catálogo
+            </Link>
+            <Link href="/#como-funciona" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+              Garantia
+            </Link>
+            <Link href="/#diferenciais" className="text-sm font-medium text-zinc-400 hover:text-white transition-colors">
+              Por que nós?
+            </Link>
+          </div>
+        </div>
 
         <div className="flex items-center gap-3 text-sm">
           {!isChecking && user && (

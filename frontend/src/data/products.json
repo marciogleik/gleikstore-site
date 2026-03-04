@@ -1,0 +1,680 @@
+{
+    "lastUpdated": "04/03/26",
+    "categories": [
+        {
+            "id": "iphone",
+            "name": "iPhone",
+            "image": "/images/catalog/iphone.png",
+            "items": [
+                {
+                    "id": "1",
+                    "name": "iPhone 13 128GB CPO",
+                    "price": 3335.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "O equilíbrio perfeito entre potência e elegância."
+                },
+                {
+                    "id": "2",
+                    "name": "iPhone 13 128GB",
+                    "price": 3484.50,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Desempenho veloz e câmeras avançadas para o seu dia a dia."
+                },
+                {
+                    "id": "3",
+                    "name": "iPhone 13 256GB",
+                    "price": 3622.50,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Mais espaço para suas memórias com a mesma fluidez Apple."
+                },
+                {
+                    "id": "4",
+                    "name": "iPhone 14 128GB",
+                    "price": 3910.00,
+                    "colors": [
+                        "Preto",
+                        "Branco"
+                    ],
+                    "description": "Segurança e inovação em um design icônico."
+                },
+                {
+                    "id": "5",
+                    "name": "iPhone 14 256GB",
+                    "price": 4076.75,
+                    "colors": [
+                        "Preto",
+                        "Azul"
+                    ],
+                    "description": "Potência duradoura para quem não para."
+                },
+                {
+                    "id": "6",
+                    "name": "iPhone 14 Pro Max 128GB CPO",
+                    "price": 4772.50,
+                    "colors": [
+                        "Roxo"
+                    ],
+                    "description": "A tela gigante que você ama com a performance Pro."
+                },
+                {
+                    "id": "7",
+                    "name": "iPhone 14 Pro Max 128GB",
+                    "price": 5002.50,
+                    "colors": [
+                        "Gold",
+                        "Silver",
+                        "Preto"
+                    ],
+                    "description": "O auge da tecnologia iPhone 14."
+                },
+                {
+                    "id": "8",
+                    "name": "iPhone 15 Plus 128GB",
+                    "price": 4600.00,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Tela grande, bateria gigante, estilo inconfundível."
+                },
+                {
+                    "id": "9",
+                    "name": "iPhone 15 Pro 128GB CPO (Azul)",
+                    "price": 4876.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Titânio e inovação em suas mãos."
+                },
+                {
+                    "id": "10",
+                    "name": "iPhone 15 Pro 128GB CPO (Branco)",
+                    "price": 5002.50,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "Leveza e resistência com o chip A17 Pro."
+                },
+                {
+                    "id": "11",
+                    "name": "iPhone 15 Pro Max 256GB CPO",
+                    "price": 6210.00,
+                    "colors": [
+                        "Preto",
+                        "Branco"
+                    ],
+                    "description": "O máximo em zoom e performance."
+                },
+                {
+                    "id": "12",
+                    "name": "iPhone 15 Pro Max 256GB",
+                    "price": 6842.50,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Poder Pro Max com acabamento em titânio azul."
+                },
+                {
+                    "id": "13",
+                    "name": "iPhone 16E 128GB",
+                    "price": 3680.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "A nova porta de entrada para o ecossistema moderno."
+                },
+                {
+                    "id": "14",
+                    "name": "iPhone 16 128GB (Preto)",
+                    "price": 4715.00,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Inovação absoluta com o chip A18."
+                },
+                {
+                    "id": "15",
+                    "name": "iPhone 16 128GB (Cores)",
+                    "price": 4772.50,
+                    "colors": [
+                        "Branco",
+                        "Azul",
+                        "Rosa",
+                        "Verde"
+                    ],
+                    "description": "Estilo vibrante e tecnologia de ponta."
+                },
+                {
+                    "id": "16",
+                    "name": "iPhone 16 256GB",
+                    "price": 5405.00,
+                    "colors": [
+                        "Rosa"
+                    ],
+                    "description": "A elegância do rosa com o dobro de armazenamento."
+                },
+                {
+                    "id": "17",
+                    "name": "iPhone 16 Plus 128GB",
+                    "price": 5002.50,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Visual imersivo e bateria de longa duração."
+                },
+                {
+                    "id": "18",
+                    "name": "iPhone 16 Pro 128GB CPO",
+                    "price": 6497.50,
+                    "colors": [
+                        "Desert"
+                    ],
+                    "description": "O futuro da fotografia profissional."
+                },
+                {
+                    "id": "19",
+                    "name": "iPhone 16 Pro 128GB",
+                    "price": 6555.00,
+                    "colors": [
+                        "Silver",
+                        "Desert"
+                    ],
+                    "description": "Controle total e design sofisticado."
+                },
+                {
+                    "id": "20",
+                    "name": "iPhone 16 Pro Max 256GB (P/N)",
+                    "price": 8096.00,
+                    "colors": [
+                        "Preto",
+                        "Natural"
+                    ],
+                    "description": "O iPhone definitivo para criadores."
+                },
+                {
+                    "id": "21",
+                    "name": "iPhone 16 Pro Max 256GB (Desert)",
+                    "price": 8740.00,
+                    "colors": [
+                        "Desert"
+                    ],
+                    "description": "Exclusividade e potência sem limites."
+                },
+                {
+                    "id": "22",
+                    "name": "iPhone 16 Pro Max 512GB CPO",
+                    "price": 8452.50,
+                    "colors": [
+                        "Natural",
+                        "Desert"
+                    ],
+                    "description": "Armazenamento massivo para sua vida Pro."
+                },
+                {
+                    "id": "23",
+                    "name": "iPhone 17 256GB",
+                    "price": 6095.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Antecipe o futuro com o novo iPhone 17."
+                },
+                {
+                    "id": "24",
+                    "name": "iPhone 17 Air 256GB",
+                    "price": 6900.00,
+                    "colors": [
+                        "Preto",
+                        "Silver",
+                        "Gold",
+                        "Azul"
+                    ],
+                    "description": "Surpreendentemente fino, incrivelmente poderoso."
+                },
+                {
+                    "id": "25",
+                    "name": "iPhone 17 Pro 256GB (Laranja)",
+                    "price": 8740.00,
+                    "colors": [
+                        "Laranja"
+                    ],
+                    "description": "Audácia e sofisticação no novo tom Pro."
+                },
+                {
+                    "id": "26",
+                    "name": "iPhone 17 Pro 256GB (Mix)",
+                    "price": 8797.50,
+                    "colors": [
+                        "Azul",
+                        "Laranja"
+                    ],
+                    "description": "A próxima geração Pro em suas mãos."
+                },
+                {
+                    "id": "27",
+                    "name": "iPhone 17 Pro 256GB (Silver)",
+                    "price": 8970.00,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "Clássico e futurista ao mesmo tempo."
+                },
+                {
+                    "id": "28",
+                    "name": "iPhone 17 Pro 1TB",
+                    "price": 12305.00,
+                    "colors": [
+                        "Laranja"
+                    ],
+                    "description": "Espaço infinito e poder inigualável."
+                },
+                {
+                    "id": "29",
+                    "name": "iPhone 17 Pro Max 256GB (Laranja)",
+                    "price": 9372.50,
+                    "colors": [
+                        "Laranja"
+                    ],
+                    "description": "O maior e melhor iPhone já criado."
+                },
+                {
+                    "id": "30",
+                    "name": "iPhone 17 Pro Max 256GB (Azul)",
+                    "price": 9430.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "A excelência visual em titânio azul."
+                },
+                {
+                    "id": "31",
+                    "name": "iPhone 17 Pro Max 256GB (Silver)",
+                    "price": 9660.00,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "Luxo absoluto em cada detalhe."
+                },
+                {
+                    "id": "32",
+                    "name": "iPhone 17 Pro Max 512GB (Laranja)",
+                    "price": 10522.50,
+                    "colors": [
+                        "Laranja"
+                    ],
+                    "description": "Performance épica com armazenamento Pro."
+                },
+                {
+                    "id": "33",
+                    "name": "iPhone 17 Pro Max 512GB (Azul)",
+                    "price": 11155.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "O topo da linha iPhone com design vibrante."
+                },
+                {
+                    "id": "34",
+                    "name": "iPhone 17 Pro Max 1TB (Laranja)",
+                    "price": 11613.85,
+                    "colors": [
+                        "Laranja"
+                    ],
+                    "description": "Capacidade total para o usuário mais exigente."
+                },
+                {
+                    "id": "35",
+                    "name": "iPhone 17 Pro Max 1TB (Azul)",
+                    "price": 13108.85,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "O ápice da tecnologia móvel Apple."
+                },
+                {
+                    "id": "36",
+                    "name": "iPhone 17 Pro Max 2TB",
+                    "price": 16042.50,
+                    "colors": [
+                        "Blue",
+                        "Orange",
+                        "Silver"
+                    ],
+                    "description": "Exclusividade final. O iPhone mais poderoso da história."
+                }
+            ]
+        },
+        {
+            "id": "airpods",
+            "name": "AirPods",
+            "image": "/images/catalog/airpods.png",
+            "items": [
+                {
+                    "id": "a1",
+                    "name": "AirPods 4",
+                    "price": 920.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "Som imersivo com encaixe perfeito."
+                },
+                {
+                    "id": "a2",
+                    "name": "AirPods 4 ANC",
+                    "price": 1265.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "Cancelamento de ruído em um design icônico."
+                },
+                {
+                    "id": "a3",
+                    "name": "AirPods Pro 3",
+                    "price": 1782.50,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "A evolução do áudio espacial e conforto."
+                },
+                {
+                    "id": "a4",
+                    "name": "AirPods Max (Standard)",
+                    "price": 3852.50,
+                    "colors": [
+                        "Midnight",
+                        "Starlight"
+                    ],
+                    "description": "Alta fidelidade em um design over-ear luxuoso."
+                },
+                {
+                    "id": "a5",
+                    "name": "AirPods Max (Azul)",
+                    "price": 4140.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Estilo e áudio excepcionais na cor azul."
+                }
+            ]
+        },
+        {
+            "id": "watch",
+            "name": "Apple Watch",
+            "image": "/images/catalog/watch.png",
+            "items": [
+                {
+                    "id": "w1",
+                    "name": "Apple Watch SE 2 40mm (Preto)",
+                    "price": 1725.00,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Essencial para sua saúde e conectividade."
+                },
+                {
+                    "id": "w2",
+                    "name": "Apple Watch SE 2 40mm (Starlight)",
+                    "price": 1863.00,
+                    "colors": [
+                        "Starlight"
+                    ],
+                    "description": "Elegância e tecnologia no seu pulso."
+                },
+                {
+                    "id": "w3",
+                    "name": "Apple Watch SE 2 44mm (Midnight)",
+                    "price": 1598.50,
+                    "colors": [
+                        "Midnight"
+                    ],
+                    "description": "Tela maior para o seu melhor desempenho."
+                },
+                {
+                    "id": "w4",
+                    "name": "Apple Watch SE 2 44mm (Gray)",
+                    "price": 1896.35,
+                    "colors": [
+                        "Gray"
+                    ],
+                    "description": "O clássico SE com mais presença."
+                },
+                {
+                    "id": "w5",
+                    "name": "Apple Watch SE 3 44mm",
+                    "price": 2070.00,
+                    "colors": [
+                        "Starlight",
+                        "Midnight"
+                    ],
+                    "description": "A nova geração SE com performance superior."
+                },
+                {
+                    "id": "w6",
+                    "name": "Apple Watch Series 11 42mm (R/S)",
+                    "price": 2645.00,
+                    "colors": [
+                        "Rose",
+                        "Silver"
+                    ],
+                    "description": "Inovação e bem-estar em design refinado."
+                },
+                {
+                    "id": "w7",
+                    "name": "Apple Watch Series 11 42mm (Gray)",
+                    "price": 3185.50,
+                    "colors": [
+                        "Gray"
+                    ],
+                    "description": "Tecnologia de ponta com acabamento premium."
+                },
+                {
+                    "id": "w8",
+                    "name": "Apple Watch Series 11 46mm (Space/Jet)",
+                    "price": 2760.00,
+                    "colors": [
+                        "Space Gray",
+                        "Jet Black"
+                    ],
+                    "description": "Visibilidade máxima e carregamento ultra rápido."
+                },
+                {
+                    "id": "w9",
+                    "name": "Apple Watch Series 11 46mm (Silver)",
+                    "price": 2817.50,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "Estilo clássico com o poder da Series 11."
+                },
+                {
+                    "id": "w10",
+                    "name": "Apple Watch Series 11 46mm Cellular",
+                    "price": 4197.50,
+                    "colors": [
+                        "Jet Black"
+                    ],
+                    "description": "Liberdade total com conexão celular integrada."
+                },
+                {
+                    "id": "w11",
+                    "name": "Apple Watch Ultra 3",
+                    "price": 5807.50,
+                    "colors": [
+                        "Black Alpine Loop"
+                    ],
+                    "description": "O relógio definitivo para exploradores e atletas."
+                }
+            ]
+        },
+        {
+            "id": "ipad",
+            "name": "iPad",
+            "image": "/images/catalog/mac_ipad.png",
+            "items": [
+                {
+                    "id": "i1",
+                    "name": "iPad 11 128GB (Azul)",
+                    "price": 2967.00,
+                    "colors": [
+                        "Azul"
+                    ],
+                    "description": "Sua tela criativa em qualquer lugar."
+                },
+                {
+                    "id": "i2",
+                    "name": "iPad 11 128GB (Silver)",
+                    "price": 2990.00,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "Versatilidade e estilo em um design clássico."
+                },
+                {
+                    "id": "i3",
+                    "name": "iPad 11 256GB",
+                    "price": 3622.50,
+                    "colors": [
+                        "Rosa"
+                    ],
+                    "description": "Mais espaço para seus projetos em rosa vibrante."
+                },
+                {
+                    "id": "i4",
+                    "name": "iPad Mini A17 Pro 128GB",
+                    "price": 3622.50,
+                    "colors": [
+                        "Space"
+                    ],
+                    "description": "Pequeno no tamanho, gigante no poder."
+                },
+                {
+                    "id": "i5",
+                    "name": "iPad Air M3 11” 128GB (Space)",
+                    "price": 5175.00,
+                    "colors": [
+                        "Space Gray"
+                    ],
+                    "description": "Leveza impressionante com o chip M3."
+                },
+                {
+                    "id": "i6",
+                    "name": "iPad Air M3 11” 128GB (Blue)",
+                    "price": 5221.00,
+                    "colors": [
+                        "Blue"
+                    ],
+                    "description": "Cor e performance em total harmonia."
+                },
+                {
+                    "id": "i7",
+                    "name": "iPad Pro M5 11” 256GB (Black)",
+                    "price": 7762.50,
+                    "colors": [
+                        "Space Black"
+                    ],
+                    "description": "O futuro do trabalho e criação profissional."
+                },
+                {
+                    "id": "i8",
+                    "name": "iPad Pro M5 11” 256GB (Silver)",
+                    "price": 8096.00,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "A tela mais avançada do mundo em suas mãos."
+                },
+                {
+                    "id": "i9",
+                    "name": "iPad Pro M5 13” 256GB",
+                    "price": 10292.50,
+                    "colors": [
+                        "Space Black"
+                    ],
+                    "description": "A experiência Pro definitiva com tela de 13\"."
+                }
+            ]
+        },
+        {
+            "id": "macbook",
+            "name": "MacBook",
+            "image": "/images/catalog/mac_ipad.png",
+            "items": [
+                {
+                    "id": "m1",
+                    "name": "MacBook M4 Mini 16/256",
+                    "price": 4600.00,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "Pequeno por fora, um monstro por dentro."
+                },
+                {
+                    "id": "m2",
+                    "name": "MacBook Pro M4 14” 16/512GB",
+                    "price": 11902.50,
+                    "colors": [
+                        "Silver"
+                    ],
+                    "description": "O laptop definitivo para profissionais."
+                }
+            ]
+        },
+        {
+            "id": "acessórios",
+            "name": "Acessórios",
+            "image": "/images/catalog/iphone.png",
+            "items": [
+                {
+                    "id": "ac1",
+                    "name": "Magic Mouse 2",
+                    "price": 805.00,
+                    "colors": [
+                        "Preto"
+                    ],
+                    "description": "Navegação fluida e recarregável."
+                },
+                {
+                    "id": "ac2",
+                    "name": "Apple Pencil USB-C",
+                    "price": 724.50,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "Precisão absoluta para iPad."
+                },
+                {
+                    "id": "ac3",
+                    "name": "Apple Pencil Pro",
+                    "price": 920.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "A ferramenta mágica para artistas."
+                },
+                {
+                    "id": "ac4",
+                    "name": "AirTag Pack (4 unidades)",
+                    "price": 920.00,
+                    "colors": [
+                        "Branco"
+                    ],
+                    "description": "Nunca mais perca o que é importante."
+                },
+                {
+                    "id": "ac5",
+                    "name": "Magic Keyboard Touch ID",
+                    "price": 1552.50,
+                    "colors": [
+                        "White"
+                    ],
+                    "description": "Conforto e segurança numéricas."
+                }
+            ]
+        }
+    ]
+}
