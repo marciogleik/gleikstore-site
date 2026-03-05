@@ -97,9 +97,9 @@ export default function DevicePage() {
         })
       }
     } catch (error) {
-      setMessage({ 
-        type: 'error', 
-        text: error instanceof Error ? error.message : 'Erro ao salvar aparelho' 
+      setMessage({
+        type: 'error',
+        text: error instanceof Error ? error.message : 'Erro ao salvar aparelho'
       })
     } finally {
       setIsSaving(false)
@@ -117,45 +117,51 @@ export default function DevicePage() {
   return (
     <div className="space-y-8">
       <div>
-        <h1 className="text-3xl font-bold">Meu Aparelho</h1>
-        <p className="text-zinc-400 mt-2">Informações do seu iPhone comprado na Gleikstore</p>
+        <h1 className="text-3xl font-bold flex items-center gap-3">
+          {formData.model.includes('16') ? (
+            <>Meu Dispositivo Elite <Shield className="w-8 h-8 text-amber-500" /></>
+          ) : (
+            'Meu Aparelho'
+          )}
+        </h1>
+        <p className="text-zinc-400 mt-2">
+          {formData.model.includes('16')
+            ? 'Sua experiência VIP GLEIKSTORE com o mais novo iPhone 16.'
+            : 'Informações do seu iPhone comprado na Gleikstore'}
+        </p>
       </div>
 
       {/* Status da Garantia */}
       {warranty && (
         <Card
-          className={`border ${
-            isWarrantyValid(warranty.warrantyEnd)
+          className={`border ${isWarrantyValid(warranty.warrantyEnd)
               ? 'bg-green-500/10 border-green-500/20'
               : 'bg-red-500/10 border-red-500/20'
-          }`}
+            }`}
         >
           <CardContent className="py-6">
             <div className="flex items-center gap-4">
               <div
-                className={`p-3 rounded-xl ${
-                  isWarrantyValid(warranty.warrantyEnd) ? 'bg-green-500/20' : 'bg-red-500/20'
-                }`}
+                className={`p-3 rounded-xl ${isWarrantyValid(warranty.warrantyEnd) ? 'bg-green-500/20' : 'bg-red-500/20'
+                  }`}
               >
                 <Shield
-                  className={`w-6 h-6 ${
-                    isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
-                  }`}
+                  className={`w-6 h-6 ${isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
+                    }`}
                 />
               </div>
               <div>
                 <h3
-                  className={`font-semibold ${
-                    isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
-                  }`}
+                  className={`font-semibold ${isWarrantyValid(warranty.warrantyEnd) ? 'text-green-400' : 'text-red-400'
+                    }`}
                 >
                   {isWarrantyValid(warranty.warrantyEnd) ? 'Garantia Ativa' : 'Garantia Expirada'}
                 </h3>
                 <p className="text-sm text-zinc-400">
                   {isWarrantyValid(warranty.warrantyEnd)
                     ? `${daysUntilWarrantyEnd(warranty.warrantyEnd)} dias restantes • Válida até ${formatDate(
-                        warranty.warrantyEnd,
-                      )}`
+                      warranty.warrantyEnd,
+                    )}`
                     : `Expirou em ${formatDate(warranty.warrantyEnd)}`}
                 </p>
               </div>
@@ -174,11 +180,10 @@ export default function DevicePage() {
         <CardContent>
           <form onSubmit={handleSubmit} className="space-y-6">
             {message.text && (
-              <div className={`p-4 rounded-xl text-sm ${
-                message.type === 'success' 
+              <div className={`p-4 rounded-xl text-sm ${message.type === 'success'
                   ? 'bg-green-500/10 border border-green-500/20 text-green-400'
                   : 'bg-red-500/10 border border-red-500/20 text-red-400'
-              }`}>
+                }`}>
                 {message.text}
               </div>
             )}
