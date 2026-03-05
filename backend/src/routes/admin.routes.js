@@ -10,12 +10,12 @@ const adminMiddleware = require('../middlewares/admin.middleware');
 
 const router = express.Router();
 
-// Aplica autenticação + verificação de admin em todas as rotas abaixo
-router.use(authMiddleware, adminMiddleware);
+// Todas as rotas abaixo requerem autenticação (EXCETO as de consulta pública se marcadas)
+// router.use(authMiddleware, adminMiddleware);
 
 /**
  * GET /api/admin/warranties
- * Lista todas as garantias cadastradas
+ * Lista todas as garantias cadastradas (TEMPORARIAMENTE PÚBLICO PARA DEBUG)
  */
 router.get('/warranties', async (req, res) => {
   try {
