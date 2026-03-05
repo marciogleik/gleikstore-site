@@ -98,6 +98,16 @@ app.get('/api/ping', (req, res) => {
   res.json({ pong: true });
 });
 
+// DEBUG: Listar garantias
+app.get('/api/debug-warranties', async (req, res) => {
+  try {
+    const warranties = await prisma.warrantyTemplate.findMany();
+    return res.json({ warranties });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 // ============ 404 HANDLER ============
 app.use('/api/*', (req, res) => {
   res.status(404).json({
