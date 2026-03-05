@@ -90,7 +90,7 @@ export default function DashboardPage() {
         </h1>
         <p className="text-zinc-400 text-sm md:text-base max-w-2xl">
           {user?.name.includes('Sara') ? (
-            "Seu iPhone 16 Rosa (256GB) está sendo preparado com todo carinho. Preparamos uma experiência exclusiva para você acompanhar sua nova conquista."
+            "Seu iPhone 16 Rosa (256GB) foi entregue! Esperamos que você aproveite cada momento com sua nova conquista."
           ) : (
             "Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia, organiza documentos e recebe benefícios e promoções selecionadas."
           )}
@@ -114,9 +114,9 @@ export default function DashboardPage() {
                 <h3 className="text-xl font-bold text-pink-100">Status do seu Novo iPhone</h3>
                 <p className="text-zinc-400">Modelo: iPhone 16 256GB - Cor: Rosa</p>
                 <div className="w-full bg-zinc-800 rounded-full h-2 mt-4 overflow-hidden">
-                  <div className="bg-emerald-500 h-full w-[65%] animate-pulse" />
+                  <div className="bg-emerald-500 h-full w-full" />
                 </div>
-                <p className="text-[10px] text-emerald-400 uppercase tracking-widest mt-2">✨ Preparando Envio VIP</p>
+                <p className="text-[10px] text-emerald-400 uppercase tracking-widest mt-2">📦 Entregue com Sucesso</p>
               </div>
               <Button variant="outline" className="border-pink-500/30 hover:bg-pink-500/10 text-pink-300">
                 Ver Certificado de Elite
