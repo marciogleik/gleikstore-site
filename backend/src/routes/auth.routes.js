@@ -13,59 +13,6 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
-// TEMP: Listar IMEIs para atrelar à Sara
-router.get('/list-imeis', async (req, res) => {
-  try {
-    const warranties = await prisma.warrantyTemplate.findMany();
-    return res.json({ warranties });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-
-// NOVO: Auto-vincular o iPhone 16 da Sara
-router.get('/auto-link-sara', async (req, res) => {
-  try {
-    const user = await prisma.user.findUnique({ where: { email: 'sasvenancio04@gmail.com' } });
-    if (!user) return res.status(404).json({ error: 'Usuário Sara não encontrado' });
-
-    // Buscar o único iPhone 16
-    const warranty = await prisma.warrantyTemplate.findFirst({
-      where: {
-        model: { contains: 'iPhone 16', mode: 'insensitive' }
-      }
-    });
-
-    if (!warranty) return res.status(404).json({ error: 'Nenhum iPhone 16 encontrado no sistema' });
-
-    // Verificar se já está vinculado
-    const existing = await prisma.device.findFirst({
-      where: { userId: user.id, imei: warranty.imei }
-    });
-
-    if (existing) return res.json({ message: 'Aparelho já vinculado!', device: existing });
-
-    // Criar o vínculo
-    const device = await prisma.device.create({
-      data: {
-        userId: user.id,
-        model: warranty.model,
-        imei: warranty.imei,
-        purchaseDate: warranty.purchaseDate,
-        warrantyEnd: warranty.warrantyEnd
-      }
-    });
-
-    return res.json({
-      success: true,
-      message: 'iPhone 16 vinculado com sucesso à Sara!',
-      device
-    });
-  } catch (error) {
-    return res.status(500).json({ error: error.message });
-  }
-});
-
 /**
  * POST /api/auth/register
  * Criar nova conta de usuário
