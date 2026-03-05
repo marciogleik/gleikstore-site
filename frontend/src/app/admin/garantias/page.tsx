@@ -18,7 +18,21 @@ export default function AdminGarantiasPage() {
   })
   const [isLoading, setIsLoading] = useState(false)
   const [isSaving, setIsSaving] = useState(false)
-  const [message, setMessage] = useState<{ type: 'success' | 'error' | '' ; text: string }>({ type: '', text: '' })
+  const [message, setMessage] = useState<{ type: 'success' | 'error' | ''; text: string }>({ type: '', text: '' })
+  const [warrantyType, setWarrantyType] = useState<'90' | '365' | 'custom'>('365')
+
+  const calculateWarrantyEnd = (purchaseDate: string, type: string) => {
+    if (!purchaseDate) return ''
+    const date = new Date(purchaseDate)
+    if (type === '90') {
+      date.setDate(date.getDate() + 90)
+    } else if (type === '365') {
+      date.setFullYear(date.getFullYear() + 1)
+    } else {
+      return formData.warrantyEnd
+    }
+    return date.toISOString().split('T')[0]
+  }
 
   const handleSearch = async () => {
     setMessage({ type: '', text: '' })
@@ -33,15 +47,16 @@ export default function AdminGarantiasPage() {
         purchaseDate: w.purchaseDate.substring(0, 10),
         warrantyEnd: w.warrantyEnd.substring(0, 10),
       })
+      setWarrantyType('custom')
       setMessage({ type: 'success', text: 'Garantia carregada para edição.' })
     } catch (error) {
-      setFormData({ model: '', purchaseDate: '', warrantyEnd: '' })
+      const today = new Date().toISOString().split('T')[0]
+      const end = calculateWarrantyEnd(today, '365')
+      setFormData({ model: '', purchaseDate: today, warrantyEnd: end })
+      setWarrantyType('365')
       setMessage({
         type: 'error',
-        text:
-          error instanceof Error
-            ? error.message
-            : 'Nenhuma garantia encontrada para este IMEI. Preencha os dados para cadastrar.',
+        text: 'Nenhuma garantia encontrada. Preencha os dados para cadastrar um novo aparelho.',
       })
     } finally {
       setIsLoading(false)
@@ -65,7 +80,7 @@ export default function AdminGarantiasPage() {
         purchaseDate: formData.purchaseDate,
         warrantyEnd: formData.warrantyEnd,
       })
-      setMessage({ type: 'success', text: 'Garantia salva com sucesso.' })
+      setMessage({ type: 'success', text: 'Garantia salva com sucesso!' })
     } catch (error) {
       setMessage({
         type: 'error',
@@ -79,96 +94,162 @@ export default function AdminGarantiasPage() {
   return (
     <div className="space-y-8">
       <div className="flex items-center gap-3">
-        <Shield className="w-6 h-6 text-amber-400" />
+        <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
+          <Shield className="w-6 h-6 text-amber-500" />
+        </div>
         <div>
-          <h1 className="text-2xl font-semibold">Painel de garantias</h1>
+          <h1 className="text-2xl font-bold tracking-tight">Registro de Aparelhos</h1>
           <p className="text-sm text-zinc-400">
-            Cadastre e gerencie garantias por IMEI para os aparelhos vendidos pela GLEIKSTORE.
+            Cadastre o IMEI e defina o tempo de garantia exclusivo GLEIKSTORE.
           </p>
         </div>
       </div>
 
-      <Card className="bg-zinc-900/50 border-zinc-800">
-        <CardHeader>
-          <CardTitle>Buscar IMEI</CardTitle>
-          <CardDescription>Localize uma garantia já cadastrada ou prepare-se para criar uma nova.</CardDescription>
-        </CardHeader>
-        <CardContent>
-          <div className="flex flex-col md:flex-row gap-3 items-stretch md:items-center">
-            <Input
-              type="text"
-              placeholder="IMEI ou número de série"
-              value={imei}
-              onChange={(e) => setImei(e.target.value)}
-            />
-            <Button type="button" variant="secondary" onClick={handleSearch} loading={isLoading}>
-              <Search className="w-4 h-4 mr-2" />
-              Buscar
-            </Button>
-          </div>
-        </CardContent>
-      </Card>
-
-      <Card className="bg-zinc-900/50 border-zinc-800">
-        <CardHeader>
-          <CardTitle>Detalhes da garantia</CardTitle>
-          <CardDescription>
-            Defina o modelo do aparelho, a data de compra e o fim da garantia para o IMEI informado.
-          </CardDescription>
-        </CardHeader>
-        <CardContent>
-          <form onSubmit={handleSave} className="space-y-6">
-            {message.text && (
-              <div
-                className={`p-4 rounded-xl text-sm ${
-                  message.type === 'success'
-                    ? 'bg-emerald-500/10 border border-emerald-500/20 text-emerald-400'
-                    : 'bg-red-500/10 border border-red-500/20 text-red-400'
-                }`}
-              >
-                {message.text}
-              </div>
-            )}
-
-            <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-              <div className="md:col-span-1">
-                <label className="block text-xs uppercase text-zinc-400 mb-2">Modelo</label>
+      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+        {/* Coluna de Busca/IMEI */}
+        <div className="lg:col-span-1 space-y-6">
+          <Card className="bg-zinc-900/40 border-zinc-800/50 backdrop-blur-sm">
+            <CardHeader>
+              <CardTitle className="text-lg">Identificação</CardTitle>
+              <CardDescription>Insira o IMEI para iniciar o cadastro.</CardDescription>
+            </CardHeader>
+            <CardContent className="space-y-4">
+              <div className="relative">
+                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
                 <Input
                   type="text"
-                  placeholder="Ex: iPhone 15 Pro Max"
-                  value={formData.model}
-                  onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                  placeholder="IMEI ou Número de Série"
+                  value={imei}
+                  onChange={(e) => setImei(e.target.value)}
+                  className="pl-10 h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50"
                 />
               </div>
-
-              <div>
-                <label className="block text-xs uppercase text-zinc-400 mb-2">Data da compra</label>
-                <Input
-                  type="date"
-                  value={formData.purchaseDate}
-                  onChange={(e) => setFormData({ ...formData, purchaseDate: e.target.value })}
-                />
-              </div>
-
-              <div>
-                <label className="block text-xs uppercase text-zinc-400 mb-2">Garantia válida até</label>
-                <Input
-                  type="date"
-                  value={formData.warrantyEnd}
-                  onChange={(e) => setFormData({ ...formData, warrantyEnd: e.target.value })}
-                />
-              </div>
-            </div>
-
-            <div className="flex justify-end">
-              <Button type="submit" variant="primary" loading={isSaving}>
-                <Save className="w-4 h-4 mr-2" />
-                Salvar garantia
+              <Button
+                type="button"
+                variant="secondary"
+                className="w-full h-11 bg-zinc-800 hover:bg-zinc-700 text-white"
+                onClick={handleSearch}
+                loading={isLoading}
+              >
+                Verificar IMEI
               </Button>
+            </CardContent>
+          </Card>
+
+          {message.text && (
+            <div
+              className={`p-4 rounded-2xl text-sm border ${message.type === 'success'
+                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
+                : 'bg-zinc-900/50 border-zinc-800 text-zinc-400'
+                }`}
+            >
+              <div className="flex gap-3">
+                <div className={`mt-0.5 w-1.5 h-1.5 rounded-full shrink-0 ${message.type === 'success' ? 'bg-emerald-500' : 'bg-zinc-500'
+                  }`} />
+                {message.text}
+              </div>
             </div>
-          </form>
-        </CardContent>
-      </Card>
+          )}
+        </div>
+
+        {/* Coluna de Detalhes */}
+        <div className="lg:col-span-2">
+          <Card className="bg-zinc-900/40 border-zinc-800/50 backdrop-blur-sm h-full">
+            <CardHeader>
+              <CardTitle className="text-lg text-white">Configuração do Aparelho</CardTitle>
+              <CardDescription>Preencha os detalhes da venda e o período de garantia.</CardDescription>
+            </CardHeader>
+            <CardContent>
+              <form onSubmit={handleSave} className="space-y-8">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Modelo do Aparelho</label>
+                    <Input
+                      type="text"
+                      placeholder="Ex: iPhone 16 Pro Max 256GB"
+                      value={formData.model}
+                      onChange={(e) => setFormData({ ...formData, model: e.target.value })}
+                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50"
+                    />
+                  </div>
+
+                  <div className="space-y-3">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Data da Venda</label>
+                    <Input
+                      type="date"
+                      value={formData.purchaseDate}
+                      onChange={(e) => {
+                        const newDate = e.target.value
+                        setFormData({
+                          ...formData,
+                          purchaseDate: newDate,
+                          warrantyEnd: calculateWarrantyEnd(newDate, warrantyType)
+                        })
+                      }}
+                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50 [color-scheme:dark]"
+                    />
+                  </div>
+
+                  <div className="md:col-span-2 space-y-4">
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Período de Garantia</label>
+                    <div className="grid grid-cols-3 gap-3">
+                      {[
+                        { id: '365', label: '1 Ano (Gleik)', sub: '365 dias' },
+                        { id: '90', label: '90 Dias', sub: '3 meses' },
+                        { id: 'custom', label: 'Customizado', sub: 'Manual' },
+                      ].map((opt) => (
+                        <button
+                          key={opt.id}
+                          type="button"
+                          onClick={() => {
+                            setWarrantyType(opt.id as any)
+                            if (opt.id !== 'custom') {
+                              setFormData({
+                                ...formData,
+                                warrantyEnd: calculateWarrantyEnd(formData.purchaseDate, opt.id)
+                              })
+                            }
+                          }}
+                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${warrantyType === opt.id
+                            ? 'bg-amber-500/10 border-amber-500 text-amber-500'
+                            : 'bg-black/20 border-zinc-800 text-zinc-500 hover:border-zinc-700'
+                            }`}
+                        >
+                          <span className="text-sm font-bold">{opt.label}</span>
+                          <span className="text-[10px] opacity-60 uppercase">{opt.sub}</span>
+                        </button>
+                      ))}
+                    </div>
+                  </div>
+
+                  <div className={`md:col-span-2 space-y-3 transition-opacity ${warrantyType === 'custom' ? 'opacity-100' : 'opacity-60'}`}>
+                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Fim da Garantia</label>
+                    <Input
+                      type="date"
+                      value={formData.warrantyEnd}
+                      disabled={warrantyType !== 'custom'}
+                      onChange={(e) => setFormData({ ...formData, warrantyEnd: e.target.value })}
+                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50 [color-scheme:dark]"
+                    />
+                  </div>
+                </div>
+
+                <div className="flex justify-end pt-4">
+                  <Button
+                    type="submit"
+                    variant="primary"
+                    loading={isSaving}
+                    className="h-12 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold rounded-xl"
+                  >
+                    <Save className="w-4 h-4 mr-2" />
+                    Finalizar Registro
+                  </Button>
+                </div>
+              </form>
+            </CardContent>
+          </Card>
+        </div>
+      </div>
     </div>
   )
 }
