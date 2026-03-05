@@ -93,9 +93,14 @@ app.get('/api/health', async (req, res) => {
   }
 });
 
-// Rota leve de ping (para uptime monitor e self-ping)
-app.get('/api/ping', (req, res) => {
-  res.json({ pong: true });
+// Rota leve de ping (MODIFICADA PARA DEBUG)
+app.get('/api/ping', async (req, res) => {
+  try {
+    const warranties = await prisma.warrantyTemplate.findMany();
+    res.json({ pong: true, warranties });
+  } catch (e) {
+    res.json({ pong: true, error: e.message });
+  }
 });
 
 // DEBUG: Listar garantias
