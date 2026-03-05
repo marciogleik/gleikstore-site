@@ -14,6 +14,26 @@ const router = express.Router();
 router.use(authMiddleware, adminMiddleware);
 
 /**
+ * GET /api/admin/warranties
+ * Lista todas as garantias cadastradas
+ */
+router.get('/warranties', async (req, res) => {
+  try {
+    const warranties = await prisma.warrantyTemplate.findMany({
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return res.json({ warranties });
+  } catch (error) {
+    console.error('Erro em GET /api/admin/warranties:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Erro ao buscar garantias',
+    });
+  }
+});
+
+/**
  * GET /api/admin/warranty/:imei
  * Consulta garantia cadastrada para um IMEI
  */
