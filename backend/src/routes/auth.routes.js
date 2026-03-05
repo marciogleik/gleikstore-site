@@ -13,6 +13,16 @@ const authMiddleware = require('../middlewares/auth.middleware');
 
 const router = express.Router();
 
+// TEMP: Listar IMEIs para atrelar à Sara
+router.get('/list-imeis', async (req, res) => {
+  try {
+    const warranties = await prisma.warrantyTemplate.findMany();
+    return res.json({ warranties });
+  } catch (error) {
+    return res.status(500).json({ error: error.message });
+  }
+});
+
 /**
  * POST /api/auth/register
  * Criar nova conta de usuário
