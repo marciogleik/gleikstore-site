@@ -255,7 +255,40 @@ export default function Home() {
             Avaliações reais
           </h2>
 
-          <div className="grid md:grid-cols-3 gap-6">
+          <div className="grid md:grid-cols-2 lg:grid-cols-4 gap-6">
+            {/* Samara Andrade - Depoimento Real com Foto */}
+            <div className="lg:col-span-2 p-6 rounded-2xl bg-gradient-to-b from-amber-500/10 via-white/[0.04] to-white/[0.01] border border-amber-500/20 relative overflow-hidden">
+              <div className="absolute top-3 right-4 text-amber-500 text-xs font-bold uppercase tracking-widest">✓ Cliente Verificada</div>
+              <div className="flex gap-1 mb-4">
+                {[...Array(5)].map((_, i) => (
+                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
+                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
+                  </svg>
+                ))}
+              </div>
+              <p className="text-sm text-gray-300 leading-relaxed mb-5 italic">
+                &ldquo;Eu quero comissão! kkkkk a família inteira comprando com vc e eu que indiquei kkkkk Hahaha vc é o melhor!!!&rdquo; ❤️
+              </p>
+              <div className="flex items-center gap-3">
+                <div className="relative">
+                  <img
+                    src="/images/depoimentos/samara.png"
+                    alt="Samara Andrade"
+                    className="w-12 h-12 rounded-full object-cover border-2 border-amber-500/50"
+                  />
+                  <div className="absolute -bottom-0.5 -right-0.5 w-4 h-4 bg-amber-500 rounded-full flex items-center justify-center">
+                    <svg className="w-2.5 h-2.5 text-black" fill="currentColor" viewBox="0 0 20 20">
+                      <path fillRule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clipRule="evenodd" />
+                    </svg>
+                  </div>
+                </div>
+                <div>
+                  <p className="text-sm font-semibold text-white">Samara Andrade</p>
+                  <p className="text-xs text-amber-400">@andrade_sama · Indicou a família toda 😄</p>
+                </div>
+              </div>
+            </div>
+
             <div className="p-6 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.06]">
               <div className="flex gap-1 mb-4">
                 {[...Array(5)].map((_, i) => (
@@ -268,7 +301,7 @@ export default function Home() {
                 &ldquo;Peguei um iPhone 14 Pro com a Gleikstore e o aparelho tá impecável. Mostraram tudo antes, bateria, tela, sem mistério nenhum. Super recomendo.&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-xs font-bold">M</div>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-violet-500 to-purple-600 flex items-center justify-center text-xs font-bold">M</div>
                 <div>
                   <p className="text-sm font-medium">Marcos S.</p>
                   <p className="text-xs text-gray-600">iPhone 14 Pro</p>
@@ -285,30 +318,10 @@ export default function Home() {
                 ))}
               </div>
               <p className="text-sm text-gray-400 leading-relaxed mb-4">
-                &ldquo;Comprei um 13 pra minha mãe. Ela não entende muito de celular e o pessoal da Gleikstore teve paciência de explicar tudo. Atendimento nota 10, voltarei com certeza.&rdquo;
-              </p>
-              <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-emerald-500 to-teal-600 flex items-center justify-center text-xs font-bold">A</div>
-                <div>
-                  <p className="text-sm font-medium">Ana P.</p>
-                  <p className="text-xs text-gray-600">iPhone 13</p>
-                </div>
-              </div>
-            </div>
-
-            <div className="p-6 rounded-2xl bg-gradient-to-b from-white/[0.04] to-white/[0.01] border border-white/[0.06]">
-              <div className="flex gap-1 mb-4">
-                {[...Array(5)].map((_, i) => (
-                  <svg key={i} className="w-4 h-4 text-amber-400" fill="currentColor" viewBox="0 0 20 20">
-                    <path d="M9.049 2.927c.3-.921 1.603-.921 1.902 0l1.07 3.292a1 1 0 00.95.69h3.462c.969 0 1.371 1.24.588 1.81l-2.8 2.034a1 1 0 00-.364 1.118l1.07 3.292c.3.921-.755 1.688-1.54 1.118l-2.8-2.034a1 1 0 00-1.175 0l-2.8 2.034c-.784.57-1.838-.197-1.539-1.118l1.07-3.292a1 1 0 00-.364-1.118L2.98 8.72c-.783-.57-.38-1.81.588-1.81h3.461a1 1 0 00.951-.69l1.07-3.292z" />
-                  </svg>
-                ))}
-              </div>
-              <p className="text-sm text-gray-400 leading-relaxed mb-4">
                 &ldquo;Terceiro aparelho que pego lá. Preço justo, aparelho em estado excelente e a equipe é gente boa demais. Não compro em outro lugar.&rdquo;
               </p>
               <div className="flex items-center gap-3">
-                <div className="w-8 h-8 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-xs font-bold">R</div>
+                <div className="w-9 h-9 rounded-full bg-gradient-to-br from-sky-500 to-blue-600 flex items-center justify-center text-xs font-bold">R</div>
                 <div>
                   <p className="text-sm font-medium">Rafael L.</p>
                   <p className="text-xs text-gray-600">iPhone 15 Pro Max</p>
