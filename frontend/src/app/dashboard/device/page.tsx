@@ -69,9 +69,6 @@ export default function DevicePage() {
         const response = await createDevice({
           model: formData.model,
           imei: formData.imei,
-          // Datas não são mais informadas pelo cliente; usamos placeholders mínimos
-          purchaseDate: new Date().toISOString(),
-          warrantyEnd: new Date().toISOString(),
         })
         setDevice(response.device)
       }

@@ -1,7 +1,7 @@
 'use client'
 
 import { useState, useEffect } from 'react'
-import { Save, User, Mail, Phone, MapPin, CreditCard, Shield, Sparkles, FileText, MessageCircle, Search } from 'lucide-react'
+import { Save, User, Mail, Phone, MapPin, CreditCard, Shield, Sparkles, FileText, MessageCircle, Search, Smartphone } from 'lucide-react'
 import Link from 'next/link'
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
@@ -78,48 +78,56 @@ export default function DashboardPage() {
   return (
     <div className="space-y-10">
       {/* Hero da área de membros */}
-      <div className="space-y-3">
-        <h1 className="text-3xl font-bold flex items-center gap-3">
-          {user?.name.includes('Sara') ? (
+      <div className="space-y-2">
+        <h1 className="text-3xl md:text-4xl font-bold tracking-tighter text-white flex items-center gap-3">
+          {user?.name.toLowerCase().includes('sara') ? (
             <>
-              Bem-vinda, {user.name.split(' ')[0]}! <Sparkles className="w-6 h-6 text-pink-400 animate-pulse" />
+              Bem-vinda, <span className="capitalize">{user.name.split(' ')[0].toLowerCase()}</span>! <Sparkles className="w-6 h-6 text-pink-400 rotate-12" />
             </>
           ) : (
-            'Área de membros'
+            <>
+              Área de <span className="text-zinc-500">Membros</span>
+            </>
           )}
         </h1>
-        <p className="text-zinc-400 text-sm md:text-base max-w-2xl">
-          {user?.name.includes('Sara') ? (
-            "Seu iPhone 16 Rosa (256GB) foi entregue! Esperamos que você aproveite cada momento com sua nova conquista."
+        <p className="text-zinc-500 text-sm md:text-base max-w-2xl leading-relaxed">
+          {user?.name.toLowerCase().includes('sara') ? (
+            "Seu iPhone 16 Rosa (256GB) foi entregue! Esperamos que você aproveite cada momento com sua nova conquista premium."
           ) : (
-            "Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia, organiza documentos e recebe benefícios e promoções selecionadas."
+            "Bem-vindo à sua experiência exclusiva GLEIKSTORE. Aqui você acompanha sua garantia, organiza documentos e recebe benefícios selecionados."
           )}
         </p>
       </div>
 
       {/* Seção Premium Especial para a Sara */}
-      {user?.name.includes('Sara') && (
-        <Card className="bg-gradient-to-br from-pink-500/10 via-zinc-900 to-zinc-900 border-pink-500/20 shadow-2xl shadow-pink-500/5">
-          <CardContent className="py-8">
-            <div className="flex flex-col md:flex-row items-center gap-8">
+      {user?.name.toLowerCase().includes('sara') && (
+        <Card className="bg-gradient-to-br from-pink-500/5 via-zinc-900/40 to-black border-pink-500/10 shadow-2xl shadow-pink-500/5 backdrop-blur-sm overflow-hidden group">
+          <CardContent className="py-6 sm:py-8 relative">
+            <div className="absolute top-0 right-0 p-8 opacity-10 group-hover:opacity-20 transition-opacity">
+                <Smartphone className="w-32 h-32 text-pink-500 -rotate-12" />
+            </div>
+            <div className="flex flex-col md:flex-row items-center gap-6 sm:gap-8 relative z-10">
               <div className="relative">
-                <div className="w-24 h-24 rounded-full bg-pink-500/20 flex items-center justify-center border border-pink-500/40">
-                  <span className="text-3xl">🎀</span>
+                <div className="w-20 h-20 sm:w-24 sm:h-24 rounded-2xl bg-gradient-to-br from-pink-500/20 to-pink-500/5 flex items-center justify-center border border-pink-500/20 shadow-inner">
+                  <span className="text-3xl sm:text-4xl">🎀</span>
                 </div>
-                <div className="absolute -bottom-1 -right-1 bg-emerald-500 w-6 h-6 rounded-full border-2 border-zinc-950 flex items-center justify-center">
-                  <div className="w-2 h-2 bg-white rounded-full animate-ping" />
+                <div className="absolute -bottom-1 -right-1 bg-emerald-500 w-5 h-5 sm:w-6 sm:h-6 rounded-full border-2 border-black flex items-center justify-center">
+                  <div className="w-1.5 h-1.5 sm:w-2 sm:h-2 bg-white rounded-full animate-pulse" />
                 </div>
               </div>
-              <div className="flex-1 text-center md:text-left space-y-2">
-                <h3 className="text-xl font-bold text-pink-100">Status do seu Novo iPhone</h3>
-                <p className="text-zinc-400">Modelo: iPhone 16 256GB - Cor: Rosa</p>
-                <div className="w-full bg-zinc-800 rounded-full h-2 mt-4 overflow-hidden">
-                  <div className="bg-emerald-500 h-full w-full" />
+              <div className="flex-1 text-center md:text-left space-y-1">
+                <h3 className="text-lg sm:text-xl font-bold text-pink-100/90 tracking-tight">Status do seu Novo iPhone</h3>
+                <p className="text-zinc-400 text-xs sm:text-sm">Modelo: iPhone 16 256GB • Cor: <span className="text-pink-300">Rosa</span></p>
+                <div className="w-full max-w-md bg-zinc-800/50 rounded-full h-1.5 mt-4 overflow-hidden border border-zinc-700/30">
+                  <div className="bg-gradient-to-r from-emerald-600 to-emerald-400 h-full w-full" />
                 </div>
-                <p className="text-[10px] text-emerald-400 uppercase tracking-widest mt-2">📦 Entregue com Sucesso</p>
+                <div className="flex items-center justify-center md:justify-start gap-2 mt-2">
+                    <div className="w-1.5 h-1.5 rounded-full bg-emerald-500" />
+                    <p className="text-[10px] text-emerald-400 font-bold uppercase tracking-widest">Entregue com Sucesso</p>
+                </div>
               </div>
-              <Button variant="outline" className="border-pink-500/30 hover:bg-pink-500/10 text-pink-300">
-                Ver Certificado de Elite
+              <Button variant="outline" className="border-pink-500/20 hover:bg-pink-500/10 text-pink-300 text-xs h-10 px-6 rounded-xl backdrop-blur-md">
+                Protocolo de Entrega
               </Button>
             </div>
           </CardContent>
@@ -127,17 +135,17 @@ export default function DashboardPage() {
       )}
 
       {/* Hub de benefícios */}
-      <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-4 md:gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
         <Link href="/dashboard/device">
-          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
-            <CardContent className="py-5 flex flex-col gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-400">
+          <Card className="bg-zinc-900/30 border-zinc-800/50 hover:border-emerald-500/30 hover:bg-zinc-900/60 transition-all duration-300 group h-full">
+            <CardContent className="p-5 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/10 group-hover:scale-110 transition-transform">
                 <Shield className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-semibold">Verificar garantia</h2>
-                <p className="text-xs text-zinc-400 mt-1">
-                  Consulte o status da garantia do seu iPhone cadastrado e veja quantos dias restam.
+                <h2 className="font-bold text-zinc-100 group-hover:text-white transition-colors">Verificar Garantia</h2>
+                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                  Consulte o status da garantia do seu iPhone e veja quantos dias restam para sua cobertura GLEIK.
                 </p>
               </div>
             </CardContent>
@@ -145,15 +153,15 @@ export default function DashboardPage() {
         </Link>
 
         <Link href="/dashboard/documents">
-          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
-            <CardContent className="py-5 flex flex-col gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-sky-500/15 text-sky-400">
+          <Card className="bg-zinc-900/30 border-zinc-800/50 hover:border-sky-500/30 hover:bg-zinc-900/60 transition-all duration-300 group h-full">
+            <CardContent className="p-5 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-sky-500/10 text-sky-500 flex items-center justify-center border border-sky-500/10 group-hover:scale-110 transition-transform">
                 <FileText className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-semibold">Meus documentos</h2>
-                <p className="text-xs text-zinc-400 mt-1">
-                  Envie e organize seus documentos de forma segura para contratos e garantias.
+                <h2 className="font-bold text-zinc-100 group-hover:text-white transition-colors">Meus Documentos</h2>
+                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                  Acesse seus contratos, termos de garantia e envie documentos pendentes com segurança.
                 </p>
               </div>
             </CardContent>
@@ -161,15 +169,15 @@ export default function DashboardPage() {
         </Link>
 
         <Link href="#" aria-disabled className="cursor-default">
-          <Card className="bg-zinc-900/60 border-zinc-800 h-full">
-            <CardContent className="py-5 flex flex-col gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-violet-500/15 text-violet-400">
+          <Card className="bg-zinc-900/20 border-zinc-800/30 h-full opacity-60">
+            <CardContent className="p-5 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-zinc-800 text-zinc-500 flex items-center justify-center">
                 <Sparkles className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-semibold">Promoções surpresa</h2>
-                <p className="text-xs text-zinc-400 mt-1">
-                  Em breve, condições especiais e upgrades exclusivos para membros.
+                <h2 className="font-bold text-zinc-400">Ofertas Exclusivas</h2>
+                <p className="text-xs text-zinc-600 mt-1 leading-relaxed">
+                  Condições especiais para troca e upgrades de aparelhos. Disponível em breve para membros Platinum.
                 </p>
               </div>
             </CardContent>
@@ -179,15 +187,15 @@ export default function DashboardPage() {
         {/* Card de Consulta CPF - apenas para admins */}
         {isAdmin && (
           <Link href="/admin/consulta-cpf">
-            <Card className="bg-zinc-900/60 border-zinc-800 hover:border-violet-500/40 hover:bg-zinc-900 transition-colors h-full">
-              <CardContent className="py-5 flex flex-col gap-3">
-                <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-violet-500/15 text-violet-400">
+            <Card className="bg-zinc-900/30 border-zinc-800/50 hover:border-violet-500/40 hover:bg-zinc-900/60 transition-all duration-300 group h-full">
+              <CardContent className="p-5 flex flex-col gap-4">
+                <div className="w-10 h-10 rounded-xl bg-violet-500/10 text-violet-400 flex items-center justify-center border border-violet-500/10 group-hover:scale-110 transition-transform">
                   <Search className="w-5 h-5" />
                 </div>
                 <div>
-                  <h2 className="font-semibold">Consulta CPF</h2>
-                  <p className="text-xs text-zinc-400 mt-1">
-                    Verifique score de crédito e pendências financeiras (SPC/SERASA).
+                  <h2 className="font-bold text-zinc-100 group-hover:text-white transition-colors">Consulta de Crédito</h2>
+                  <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                    Ferramenta administrativa para verificação de score e pendências no SPC/SERASA.
                   </p>
                 </div>
               </CardContent>
@@ -196,15 +204,15 @@ export default function DashboardPage() {
         )}
 
         <a href="https://wa.me/5561982195532?text=Olá! Vim da área de membros GLEIKSTORE" target="_blank" rel="noopener noreferrer">
-          <Card className="bg-zinc-900/60 border-zinc-800 hover:border-zinc-600 hover:bg-zinc-900 transition-colors h-full">
-            <CardContent className="py-5 flex flex-col gap-3">
-              <div className="inline-flex items-center justify-center w-10 h-10 rounded-full bg-emerald-500/15 text-emerald-400">
+          <Card className="bg-zinc-900/30 border-zinc-800/50 hover:border-emerald-500/30 hover:bg-zinc-900/60 transition-all duration-300 group h-full">
+            <CardContent className="p-5 flex flex-col gap-4">
+              <div className="w-10 h-10 rounded-xl bg-emerald-500/10 text-emerald-500 flex items-center justify-center border border-emerald-500/10 group-hover:scale-110 transition-transform">
                 <MessageCircle className="w-5 h-5" />
               </div>
               <div>
-                <h2 className="font-semibold">Atendimento dedicado</h2>
-                <p className="text-xs text-zinc-400 mt-1">
-                  Fale diretamente com a GLEIKSTORE pelo WhatsApp para suporte e dúvidas.
+                <h2 className="font-bold text-zinc-100 group-hover:text-white transition-colors">Suporte VIP</h2>
+                <p className="text-xs text-zinc-500 mt-1 leading-relaxed">
+                  Fale com um consultor GLEIKSTORE pelo WhatsApp para suporte imediato e personalizado.
                 </p>
               </div>
             </CardContent>

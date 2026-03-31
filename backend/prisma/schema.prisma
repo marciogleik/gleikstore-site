@@ -28,8 +28,95 @@ model User {
   documents     Document[]
   profilePhoto  ProfilePhoto?
   cpfConsultas  CpfConsulta[]
+  sales         Sale[]
 
   @@map("users")
+}
+
+// Modelo de Produto (iPhone em estoque)
+model Product {
+  id          String   @id @default(uuid())
+  model       String   // iPhone 15 Pro, etc.
+  capacity    String   // 128GB, 256GB, etc.
+  color       String
+  condition   String   // NOVO, SEMINOVO
+  imei        String   @unique
+  price       Decimal  @db.Decimal(10, 2)
+  status      ProductStatus @default(AVAILABLE)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  sales       Sale[]
+
+  @@map("products")
+}
+
+enum ProductStatus {
+  AVAILABLE
+  SOLD
+  RESERVED
+  MAINTENANCE
+}
+
+// Modelo de Venda
+model Sale {
+  id          String   @id @default(uuid())
+  customerId  String
+  productId   String
+  totalAmount Decimal  @db.Decimal(10, 2)
+  paymentType PaymentType
+  status      SaleStatus @default(PENDING)
+  contractUrl String?  // PDF do contrato no Supabase Storage
+  saleDate    DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamentos
+  customer    User    @relation(fields: [customerId], references: [id])
+  product     Product @relation(fields: [productId], references: [id])
+  payment     Payment?
+
+  @@map("sales")
+}
+
+enum PaymentType {
+  BOLETO
+  CREDIT_CARD
+  PIX
+  CASH
+  FINANCING
+}
+
+enum SaleStatus {
+  PENDING
+  COMPLETED
+  CANCELLED
+}
+
+// Modelo de Pagamento (especialmente focado em Boletos/Parcelas)
+model Payment {
+  id          String   @id @default(uuid())
+  saleId      String   @unique
+  amount      Decimal  @db.Decimal(10, 2)
+  status      PaymentStatus @default(PENDING)
+  boletoUrl   String?
+  boletoBarcode String?
+  dueDate     DateTime
+  paidAt      DateTime?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  // Relacionamento
+  sale        Sale     @relation(fields: [saleId], references: [id], onDelete: Cascade)
+
+  @@map("payments")
+}
+
+enum PaymentStatus {
+  PENDING
+  PAID
+  OVERDUE
+  CANCELLED
 }
 
 // Modelo de Dispositivo/Aparelho
@@ -54,7 +141,10 @@ model Document {
   id           String       @id @default(uuid())
   userId       String
   documentType DocumentType
-  fileUrl      String       // URL do arquivo no Supabase Storage
+  fileUrl      String?      // URL do arquivo (opcional para contratos digitais)
+  modelName    String?      // Modelo do aparelho (para contratos)
+  signature    String?      // Assinatura digital (nome digitado)
+  isDigital    Boolean      @default(false)
   uploadedAt   DateTime     @default(now())
 
   // Relacionamento

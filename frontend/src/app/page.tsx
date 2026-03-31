@@ -313,7 +313,7 @@ export default function Home() {
                 </div>
                 <div>
                   <p className="text-sm font-semibold text-white">Viviane Bochorny</p>
-                  <p className="text-xs text-gray-500">iPhone 14 Pro Max 256GB · Querência-MT</p>
+                  <p className="text-xs text-gray-500">iPhone 14 Pro Max 256GB · Água Boa-MT</p>
                 </div>
               </div>
             </div>
@@ -457,7 +457,7 @@ export default function Home() {
                   📱 (61) 98219-5532
                 </a>
                 <p className="text-sm text-gray-600">📍 Entrega para todo o Brasil</p>
-                <p className="text-sm text-gray-600">🏢 CNPJ 62.282.270/0001-90</p>
+                <p className="text-sm text-gray-600">🏢 CNPJ 62.282.270/0001-90 | Água Boa - MT</p>
               </div>
             </div>
           </div>

@@ -1,7 +1,3 @@
-/**
- * Cliente API para comunicação com o backend
- */
-
 const API_URL = process.env.NEXT_PUBLIC_API_URL || 'http://localhost:3001/api'
 
 // Tipos
@@ -19,323 +15,300 @@ export interface User {
     fileUrl: string
     uploadedAt: string
   }
-  devices?: Device[]
-  documents?: Document[]
+}
+
+export interface Product {
+    id: string
+    model: string
+    capacity: string
+    color: string
+    condition: string
+    imei: string
+    price: number
+    status: 'AVAILABLE' | 'SOLD' | 'RESERVED' | 'MAINTENANCE'
+    createdAt: string
+    updatedAt: string
+}
+
+export interface Sale {
+    id: string
+    customerId: string
+    productId: string
+    totalAmount: number
+    paymentType: 'BOLETO' | 'CREDIT_CARD' | 'PIX' | 'CASH' | 'FINANCING'
+    status: 'PENDING' | 'COMPLETED' | 'CANCELLED'
+    contractUrl: string | null
+    saleDate: string
+    customer?: {
+        name: string
+        cpf: string
+        email: string
+    }
+    product?: Product
+    payment?: Payment
+}
+
+export interface Payment {
+    id: string
+    saleId: string
+    amount: number
+    status: 'PENDING' | 'PAID' | 'OVERDUE' | 'CANCELLED'
+    boletoUrl: string | null
+    boletoBarcode: string | null
+    dueDate: string
+    paidAt: string | null
 }
 
 export interface Device {
-  id: string
-  model: string
-  imei: string
-  purchaseDate: string
-  warrantyEnd: string
-}
-
-export interface Document {
-  id: string
-  documentType: 'RG' | 'CPF' | 'COMPROVANTE_ENDERECO' | 'CONTRATO'
-  fileUrl: string
-  uploadedAt: string
+    id: string
+    userId: string
+    model: string
+    imei: string
+    createdAt: string
+    updatedAt: string
 }
 
 export interface Warranty {
-  model: string
-  imei: string
-  purchaseDate: string
-  warrantyEnd: string
-  daysRemaining: number
-  isActive: boolean
+    id: string
+    imei: string
+    model: string
+    customerName: string
+    purchaseDate: string
+    warrantyEnd: string
+    status: string
+    observations?: string
 }
 
-export interface AuthResponse {
-  message: string
-  user: User
-  token: string
+export interface Document {
+    id: string
+    userId: string
+    documentType: 'RG' | 'CPF' | 'COMPROVANTE_ENDERECO' | 'CONTRATO'
+    fileUrl?: string | null
+    modelName?: string | null
+    signature?: string | null
+    isDigital?: boolean
+    status: 'PENDING' | 'APPROVED' | 'REJECTED'
+    uploadedAt: string
 }
 
-// Função para obter token do localStorage
-function getToken(): string | null {
-  if (typeof window === 'undefined') return null
-  return localStorage.getItem('gleikstore_token')
+// ============ TOKEN MANAGEMENT ============
+
+export const setToken = (token: string) => {
+    if (typeof window !== 'undefined') {
+        localStorage.setItem('gleikstore_token', token)
+    }
 }
 
-// Função para salvar token
-export function setToken(token: string): void {
-  if (typeof window !== 'undefined') {
-    localStorage.setItem('gleikstore_token', token)
-  }
+export const getToken = () => {
+    if (typeof window !== 'undefined') {
+        return localStorage.getItem('gleikstore_token')
+    }
+    return null
 }
 
-// Função para remover token
-export function removeToken(): void {
-  if (typeof window !== 'undefined') {
-    localStorage.removeItem('gleikstore_token')
-  }
+export const removeToken = () => {
+    if (typeof window !== 'undefined') {
+        localStorage.removeItem('gleikstore_token')
+    }
 }
 
-// Função base para requisições
-async function request<T>(
-  endpoint: string,
-  options: RequestInit = {}
-): Promise<T> {
-  const token = getToken()
+// ============ REQUEST HELPER ============
 
-  const headers: HeadersInit = {
-    'Content-Type': 'application/json',
-    ...options.headers,
-  }
+async function apiRequest(endpoint: string, options: RequestInit = {}) {
+    const token = getToken()
+    const headers = {
+        'Content-Type': 'application/json',
+        ...(token ? { 'Authorization': `Bearer ${token}` } : {}),
+        ...options.headers,
+    }
 
-  if (token) {
-    (headers as Record<string, string>)['Authorization'] = `Bearer ${token}`
-  }
+    // Se no FormData, remover Content-Type para o browser setar automaticamente com o boundary
+    if (options.body instanceof FormData) {
+        delete (headers as any)['Content-Type']
+    }
 
-  const response = await fetch(`${API_URL}${endpoint}`, {
-    ...options,
-    headers,
-  })
+    if (process.env.NODE_ENV === 'development') {
+        console.log(`[API] ${options.method || 'GET'} ${API_URL}${endpoint}`)
+    }
 
-  const data = await response.json()
+    const response = await fetch(`${API_URL}${endpoint}`, {
+        ...options,
+        headers,
+    })
 
-  if (!response.ok) {
-    throw new Error(data.message || 'Erro na requisição')
-  }
+    const contentType = response.headers.get('content-type')
+    if (contentType && !contentType.includes('application/json')) {
+        const text = await response.text()
+        console.error('[API ERROR] Resposta não é JSON:', text.substring(0, 500))
+        throw new Error(`Erro na API: O servidor retornou HTML em vez de JSON. Verifique se o backend está rodando em: ${API_URL}`)
+    }
 
-  return data
+    const data = await response.json()
+
+    if (!response.ok) {
+        throw new Error(data.message || 'Erro na requisição')
+    }
+
+    return data
 }
 
 // ============ AUTH ============
 
-export async function register(userData: {
-  name: string
-  email: string
-  password: string
-  cpf: string
-  phone: string
-  address: string
-}): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/register', {
-    method: 'POST',
-    body: JSON.stringify(userData),
-  })
+export interface AuthResponse {
+    user: User
+    token: string
 }
 
-// ============ WARRANTY ============
-
-export async function getAdminWarrantyByImei(
-  imei: string
-): Promise<{ warranty: { id: string; imei: string; model: string; purchaseDate: string; warrantyEnd: string } }> {
-  return request(`/admin/warranty/${encodeURIComponent(imei)}`)
+export async function register(userData: any): Promise<AuthResponse> {
+    const data = await apiRequest('/auth/register', {
+        method: 'POST',
+        body: JSON.stringify(userData),
+    })
+    setToken(data.token)
+    return data
 }
 
-export async function saveAdminWarranty(data: {
-  imei: string
-  model: string
-  purchaseDate: string
-  warrantyEnd: string
-}): Promise<{ message: string; warranty: { id: string; imei: string; model: string; purchaseDate: string; warrantyEnd: string } }> {
-  return request('/admin/warranty', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
-}
-
-export async function getWarrantyByImei(imei: string): Promise<{ warranty: Warranty }> {
-  return request(`/device/warranty/${encodeURIComponent(imei)}`)
-}
-
-// ============ CPF CONSULTA (Admin) ============
-
-export interface CpfPendency {
-  tipo: string
-  valor: string
-  credor: string
-  data: string
-}
-
-export interface CpfConsultaResult {
-  consulta: {
-    id: string
-    cpf: string
-    name: string | null
-    score: number | null
-    hasPendencies: boolean
-    status: string | null
-    pendencies: CpfPendency[] | null
-    rawData: Record<string, unknown> | null
-    consultedAt: string
-    consultedBy: string
-  }
-  cliente: {
-    id: string
-    name: string
-    email: string
-    phone: string
-    createdAt: string
-  } | null
-  isDemo: boolean
-}
-
-export interface CpfConsultaHistoryItem {
-  id: string
-  cpf: string
-  name: string | null
-  score: number | null
-  hasPendencies: boolean
-  status: string | null
-  consultedAt: string
-  admin: {
-    name: string
-    email: string
-  }
-}
-
-export async function consultarCpf(cpf: string): Promise<CpfConsultaResult> {
-  return request<CpfConsultaResult>(`/admin/cpf/${encodeURIComponent(cpf)}`)
-}
-
-export async function getCpfHistory(): Promise<{ consultas: CpfConsultaHistoryItem[] }> {
-  return request<{ consultas: CpfConsultaHistoryItem[] }>('/admin/cpf/history')
-}
-
-
-export async function login(credentials: {
-  email: string
-  password: string
-}): Promise<AuthResponse> {
-  return request<AuthResponse>('/auth/login', {
-    method: 'POST',
-    body: JSON.stringify(credentials),
-  })
+export async function login(credentials: { email: string; password: string }): Promise<AuthResponse> {
+    const data = await apiRequest('/auth/login', {
+        method: 'POST',
+        body: JSON.stringify(credentials),
+    })
+    setToken(data.token)
+    return data
 }
 
 export async function getMe(): Promise<{ user: User }> {
-  return request<{ user: User }>('/auth/me')
+    return apiRequest('/auth/me')
 }
 
-// ============ USER ============
-
+// Alias para compatibilidade
 export async function getUser(): Promise<{ user: User }> {
-  return request<{ user: User }>('/user')
+    return getMe()
 }
 
-export async function updateUser(data: {
-  name?: string
-  phone?: string
-  address?: string
-  currentPassword?: string
-  newPassword?: string
-}): Promise<{ message: string; user: User }> {
-  return request<{ message: string; user: User }>('/user', {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+export async function updateUser(data: any): Promise<{ message: string; user: User }> {
+    return apiRequest('/user', {
+        method: 'PUT',
+        body: JSON.stringify(data),
+    })
 }
 
-// ============ DEVICE ============
+// ============ DEVICES & WARRANTIES ============
 
 export async function getDevices(): Promise<{ devices: Device[] }> {
-  return request<{ devices: Device[] }>('/device')
+    const data = await apiRequest('/device')
+     // Forçar array
+    return { devices: Array.isArray(data) ? data : data.devices || [] }
 }
 
-export async function createDevice(data: {
-  model: string
-  imei: string
-  purchaseDate: string
-  warrantyEnd: string
-}): Promise<{ message: string; device: Device }> {
-  return request<{ message: string; device: Device }>('/device', {
-    method: 'POST',
-    body: JSON.stringify(data),
-  })
+export async function createDevice(device: any): Promise<{ device: Device }> {
+    return apiRequest('/device', {
+        method: 'POST',
+        body: JSON.stringify(device),
+    })
 }
 
-export async function updateDevice(
-  id: string,
-  data: Partial<Device>
-): Promise<{ message: string; device: Device }> {
-  return request<{ message: string; device: Device }>(`/device/${id}`, {
-    method: 'PUT',
-    body: JSON.stringify(data),
-  })
+export async function getWarrantyByImei(imei: string): Promise<{ warranty: Warranty }> {
+    return apiRequest(`/device/warranty/${imei}`)
 }
 
-// ============ UPLOAD ============
+// ============ INVENTORY ============
+
+export async function getInventory(): Promise<Product[]> {
+    return apiRequest('/inventory')
+}
+
+export async function addProduct(product: any): Promise<Product> {
+    return apiRequest('/inventory', {
+        method: 'POST',
+        body: JSON.stringify(product),
+    })
+}
+
+// ============ SALES ============
+
+export async function getSales(): Promise<Sale[]> {
+    return apiRequest('/sales')
+}
+
+export async function createSale(saleData: any): Promise<{ sale: Sale; payment: Payment | null }> {
+    return apiRequest('/sales', {
+        method: 'POST',
+        body: JSON.stringify(saleData),
+    })
+}
+
+// ============ UPLOAD & DOCUMENTS ============
 
 export async function uploadProfilePhoto(file: File): Promise<{ message: string; profilePhoto: { fileUrl: string } }> {
-  const token = getToken()
-  const formData = new FormData()
-  formData.append('photo', file)
-
-  const response = await fetch(`${API_URL}/upload/profile-photo`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Erro no upload')
-  }
-
-  return data
+    const formData = new FormData()
+    formData.append('photo', file)
+    return apiRequest('/upload/profile-photo', {
+        method: 'POST',
+        body: formData,
+    })
 }
 
 export async function uploadDocument(
-  file: File,
-  documentType: 'RG' | 'CPF' | 'COMPROVANTE_ENDERECO'
-): Promise<{ message: string; document: Document }> {
-  const token = getToken()
-  const formData = new FormData()
-  formData.append('document', file)
-  formData.append('documentType', documentType)
-
-  const response = await fetch(`${API_URL}/upload/document`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Erro no upload')
-  }
-
-  return data
+    file: File,
+    documentType: string
+): Promise<{ message: string, document: any }> {
+    const formData = new FormData()
+    formData.append('document', file)
+    formData.append('documentType', documentType)
+    return apiRequest('/upload/document', {
+        method: 'POST',
+        body: formData,
+    })
 }
 
-export async function uploadContract(file: File): Promise<{ message: string; document: Document }> {
-  const token = getToken()
-  const formData = new FormData()
-  formData.append('contract', file)
-
-  const response = await fetch(`${API_URL}/upload/contract`, {
-    method: 'POST',
-    headers: {
-      Authorization: `Bearer ${token}`,
-    },
-    body: formData,
-  })
-
-  const data = await response.json()
-
-  if (!response.ok) {
-    throw new Error(data.message || 'Erro no upload')
-  }
-
-  return data
+export async function uploadContract(file: File): Promise<{ message: string; document: any }> {
+    const formData = new FormData()
+    formData.append('contract', file)
+    return apiRequest('/upload/contract', {
+        method: 'POST',
+        body: formData,
+    })
 }
 
 export async function getDocuments(): Promise<{
-  documents: Document[]
-  profilePhoto: { fileUrl: string } | null
+    documents: any[]
+    profilePhoto: { fileUrl: string } | null
 }> {
-  return request<{ documents: Document[]; profilePhoto: { fileUrl: string } | null }>(
-    '/upload/documents'
-  )
+    return apiRequest('/upload/documents')
+}
+
+// ============ DIGITAL CONTRACTS ============
+
+export async function signDigitalContract(modelName: string, signature: string): Promise<Document> {
+    const data = await apiRequest('/contracts/sign', {
+        method: 'POST',
+        body: JSON.stringify({ modelName, signature }),
+    })
+    return data.document
+}
+
+export async function getMyContract(): Promise<Document | null> {
+    const data = await apiRequest('/contracts/my-contract')
+    return data.contract
+}
+
+// ============ ADMIN ============
+
+export async function getAdminCustomers(): Promise<{ customers: any[] }> {
+    const data = await apiRequest('/admin/customers')
+    return { customers: Array.isArray(data.customers) ? data.customers : [] }
+}
+
+export async function getAdminCustomerByCpf(cpf: string): Promise<{ user: User }> {
+    return apiRequest(`/admin/customers/${cpf}`)
+}
+
+export async function consultarCpf(cpf: string): Promise<any> {
+    return apiRequest(`/admin/cpf/consultar/${cpf}`, { method: 'POST' })
+}
+
+export async function getCpfHistory(): Promise<{ consultas: any[] }> {
+    const data = await apiRequest('/admin/cpf/history')
+    return { consultas: data.consultas || [] }
 }

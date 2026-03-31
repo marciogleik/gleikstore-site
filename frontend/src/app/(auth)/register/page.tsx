@@ -7,7 +7,7 @@ import { User, Mail, Lock, Phone, MapPin, CreditCard, ArrowRight } from 'lucide-
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
-import { register, setToken } from '@/lib/api'
+import { register } from '@/lib/api'
 import { formatCPF, formatPhone } from '@/lib/utils'
 
 export default function RegisterPage() {
@@ -36,8 +36,7 @@ export default function RegisterPage() {
         phone: formData.phone.replace(/\D/g, ''),
       }
 
-      const response = await register(cleanData)
-      setToken(response.token)
+      await register(cleanData)
       router.push('/dashboard')
     } catch (err) {
       setError(err instanceof Error ? err.message : 'Erro ao criar conta')

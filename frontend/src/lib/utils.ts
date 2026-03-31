@@ -39,6 +39,8 @@ export function formatPrice(value: number): string {
   })
 }
 
+export const formatCurrency = formatPrice
+
 // Gerar link do WhatsApp
 export function getWhatsAppLink(message: string): string {
   const phone = process.env.NEXT_PUBLIC_WHATSAPP_NUMBER || '5500000000000'

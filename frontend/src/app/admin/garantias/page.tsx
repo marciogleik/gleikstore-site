@@ -92,89 +92,97 @@ export default function AdminGarantiasPage() {
   }
 
   return (
-    <div className="space-y-8">
-      <div className="flex items-center gap-3">
-        <div className="p-3 rounded-2xl bg-amber-500/10 border border-amber-500/20">
-          <Shield className="w-6 h-6 text-amber-500" />
-        </div>
-        <div>
-          <h1 className="text-2xl font-bold tracking-tight">Registro de Aparelhos</h1>
-          <p className="text-sm text-zinc-400">
-            Cadastre o IMEI e defina o tempo de garantia exclusivo GLEIKSTORE.
-          </p>
+    <div className="space-y-10 pb-10">
+      <div className="flex flex-col md:flex-row md:items-center justify-between gap-8 pb-4 border-b border-zinc-900">
+        <div className="flex items-center gap-5">
+            <div className="relative group">
+                <div className="absolute -inset-1 bg-gradient-to-r from-amber-600 to-yellow-600 rounded-2xl blur opacity-25 group-hover:opacity-50 transition duration-1000 group-hover:duration-200"></div>
+                <div className="relative p-4 rounded-2xl bg-black border border-zinc-800 shadow-xl">
+                    <Shield className="w-8 h-8 text-amber-500" />
+                </div>
+            </div>
+            <div className="space-y-1">
+                <h1 className="text-3xl font-black tracking-tight text-white bg-clip-text text-transparent bg-gradient-to-b from-white to-zinc-500 uppercase">
+                    Gestão de Garantias
+                </h1>
+                <p className="text-sm text-zinc-500 font-medium tracking-wide">
+                    Controle de IMEI e prazos de cobertura exclusiva GLEIKSTORE.
+                </p>
+            </div>
         </div>
       </div>
 
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+      <div className="grid grid-cols-1 lg:grid-cols-5 gap-8">
         {/* Coluna de Busca/IMEI */}
-        <div className="lg:col-span-1 space-y-6">
-          <Card className="bg-zinc-900/40 border-zinc-800/50 backdrop-blur-sm">
-            <CardHeader>
-              <CardTitle className="text-lg">Identificação</CardTitle>
-              <CardDescription>Insira o IMEI para iniciar o cadastro.</CardDescription>
-            </CardHeader>
-            <CardContent className="space-y-4">
-              <div className="relative">
-                <Search className="absolute left-3 top-1/2 -translate-y-1/2 w-4 h-4 text-zinc-500" />
-                <Input
-                  type="text"
-                  placeholder="IMEI ou Número de Série"
-                  value={imei}
-                  onChange={(e) => setImei(e.target.value)}
-                  className="pl-10 h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50"
-                />
+        <div className="lg:col-span-2 space-y-6">
+          <Card className="bg-zinc-950/50 border-zinc-800/80 backdrop-blur-2xl rounded-[2.5rem] overflow-hidden shadow-2xl relative group">
+            <div className="absolute inset-x-0 bottom-0 h-1 bg-gradient-to-r from-amber-600 to-yellow-600 opacity-20 group-hover:opacity-100 transition-opacity"></div>
+            <CardContent className="p-10 space-y-8 relative z-10">
+              <div className="space-y-3">
+                <label className="text-[10px] font-black uppercase tracking-[0.2em] text-zinc-500 ml-1">IMEI ou Número de Série</label>
+                <div className="relative group/input">
+                  <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-5 h-5 text-zinc-700 group-focus-within/input:text-amber-500 transition-colors" />
+                  <Input
+                    type="text"
+                    placeholder="Ex: 3587..."
+                    value={imei}
+                    onChange={(e) => setImei(e.target.value)}
+                    className="h-16 pl-12 bg-black border-zinc-900 focus:border-amber-500 focus:ring-1 focus:ring-amber-500/20 rounded-2xl transition-all font-mono text-lg text-white"
+                  />
+                </div>
               </div>
               <Button
                 type="button"
-                variant="secondary"
-                className="w-full h-11 bg-zinc-800 hover:bg-zinc-700 text-white"
+                variant="primary"
+                className="w-full h-16 bg-gradient-to-r from-amber-600 to-amber-500 hover:from-amber-500 hover:to-amber-400 text-black font-black rounded-2xl shadow-2xl shadow-amber-600/20 transition-all hover:-translate-y-1 flex items-center justify-center gap-3 active:scale-95"
                 onClick={handleSearch}
                 loading={isLoading}
               >
-                Verificar IMEI
+                <Search className="w-5 h-5" />
+                <span>Verificar Dispositivo</span>
               </Button>
             </CardContent>
           </Card>
 
           {message.text && (
             <div
-              className={`p-4 rounded-2xl text-sm border ${message.type === 'success'
-                ? 'bg-emerald-500/10 border-emerald-500/20 text-emerald-400'
-                : 'bg-zinc-900/50 border-zinc-800 text-zinc-400'
+              className={`p-5 rounded-2xl text-sm border animate-fade-in-up ${message.type === 'success'
+                ? 'bg-emerald-500/5 border-emerald-500/20 text-emerald-400'
+                : 'bg-zinc-900/30 border-zinc-800 text-zinc-400'
                 }`}
             >
-              <div className="flex gap-3">
-                <div className={`mt-0.5 w-1.5 h-1.5 rounded-full shrink-0 ${message.type === 'success' ? 'bg-emerald-500' : 'bg-zinc-500'
+              <div className="flex gap-4">
+                <div className={`mt-1 w-2 h-2 rounded-full shrink-0 ${message.type === 'success' ? 'bg-emerald-500 animate-pulse' : 'bg-zinc-500'
                   }`} />
-                {message.text}
+                <span className="leading-relaxed">{message.text}</span>
               </div>
             </div>
           )}
         </div>
 
         {/* Coluna de Detalhes */}
-        <div className="lg:col-span-2">
-          <Card className="bg-zinc-900/40 border-zinc-800/50 backdrop-blur-sm h-full">
-            <CardHeader>
-              <CardTitle className="text-lg text-white">Configuração do Aparelho</CardTitle>
-              <CardDescription>Preencha os detalhes da venda e o período de garantia.</CardDescription>
+        <div className="lg:col-span-3">
+          <Card className="bg-zinc-900/30 border-zinc-800/50 backdrop-blur-sm card-glow h-full overflow-hidden">
+            <CardHeader className="pb-6">
+              <CardTitle className="text-lg font-bold text-white">Configuração do Aparelho</CardTitle>
+              <CardDescription className="text-zinc-500">Preencha os detalhes da venda e o período de garantia.</CardDescription>
             </CardHeader>
             <CardContent>
-              <form onSubmit={handleSave} className="space-y-8">
-                <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-                  <div className="space-y-3">
-                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Modelo do Aparelho</label>
+              <form onSubmit={handleSave} className="space-y-10">
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-x-8 gap-y-8">
+                  <div className="space-y-2.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 ml-1">Modelo do Aparelho</label>
                     <Input
                       type="text"
                       placeholder="Ex: iPhone 16 Pro Max 256GB"
                       value={formData.model}
                       onChange={(e) => setFormData({ ...formData, model: e.target.value })}
-                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50"
+                      className="h-12 bg-black/40 border-zinc-800 focus:border-amber-500/40 rounded-xl transition-all"
                     />
                   </div>
 
-                  <div className="space-y-3">
-                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Data da Venda</label>
+                  <div className="space-y-2.5">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 ml-1">Data da Venda</label>
                     <Input
                       type="date"
                       value={formData.purchaseDate}
@@ -186,13 +194,13 @@ export default function AdminGarantiasPage() {
                           warrantyEnd: calculateWarrantyEnd(newDate, warrantyType)
                         })
                       }}
-                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50 [color-scheme:dark]"
+                      className="h-12 bg-black/40 border-zinc-800 focus:border-amber-500/40 rounded-xl transition-all [color-scheme:dark]"
                     />
                   </div>
 
                   <div className="md:col-span-2 space-y-4">
-                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Período de Garantia</label>
-                    <div className="grid grid-cols-3 gap-3">
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 ml-1">Período de Garantia</label>
+                    <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
                       {[
                         { id: '365', label: '1 Ano (Gleik)', sub: '365 dias' },
                         { id: '90', label: '90 Dias', sub: '3 meses' },
@@ -210,36 +218,36 @@ export default function AdminGarantiasPage() {
                               })
                             }
                           }}
-                          className={`flex flex-col items-center justify-center p-4 rounded-2xl border transition-all ${warrantyType === opt.id
-                            ? 'bg-amber-500/10 border-amber-500 text-amber-500'
-                            : 'bg-black/20 border-zinc-800 text-zinc-500 hover:border-zinc-700'
+                          className={`flex flex-col items-center justify-center p-5 rounded-2xl border transition-all duration-300 ${warrantyType === opt.id
+                            ? 'bg-amber-500/10 border-amber-500 text-amber-500 shadow-lg shadow-amber-500/5'
+                            : 'bg-black/40 border-zinc-800 text-zinc-500 hover:border-zinc-700 hover:bg-zinc-800/30'
                             }`}
                         >
-                          <span className="text-sm font-bold">{opt.label}</span>
-                          <span className="text-[10px] opacity-60 uppercase">{opt.sub}</span>
+                          <span className="text-sm font-bold tracking-tight">{opt.label}</span>
+                          <span className="text-[10px] opacity-60 uppercase tracking-widest mt-1">{opt.sub}</span>
                         </button>
                       ))}
                     </div>
                   </div>
 
-                  <div className={`md:col-span-2 space-y-3 transition-opacity ${warrantyType === 'custom' ? 'opacity-100' : 'opacity-60'}`}>
-                    <label className="text-xs font-bold uppercase tracking-wider text-zinc-500">Fim da Garantia</label>
+                  <div className={`md:col-span-2 space-y-2.5 transition-all duration-500 ${warrantyType === 'custom' ? 'opacity-100 scale-100' : 'opacity-40 scale-98 pointer-events-none'}`}>
+                    <label className="text-[10px] font-bold uppercase tracking-widest text-zinc-500 ml-1">Fim da Garantia</label>
                     <Input
                       type="date"
                       value={formData.warrantyEnd}
                       disabled={warrantyType !== 'custom'}
                       onChange={(e) => setFormData({ ...formData, warrantyEnd: e.target.value })}
-                      className="h-12 bg-black/20 border-zinc-800 focus:border-amber-500/50 [color-scheme:dark]"
+                      className="h-12 bg-black/40 border-zinc-800 focus:border-amber-500/40 rounded-xl transition-all [color-scheme:dark]"
                     />
                   </div>
                 </div>
 
-                <div className="flex justify-end pt-4">
+                <div className="flex justify-end pt-2">
                   <Button
                     type="submit"
                     variant="primary"
                     loading={isSaving}
-                    className="h-12 px-8 bg-amber-500 hover:bg-amber-600 text-black font-bold rounded-xl"
+                    className="h-12 px-10 bg-amber-500 hover:bg-amber-600 text-black font-bold rounded-xl shadow-lg shadow-amber-500/20 transition-all hover:-translate-y-0.5"
                   >
                     <Save className="w-4 h-4 mr-2" />
                     Finalizar Registro

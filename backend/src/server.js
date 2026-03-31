@@ -16,6 +16,9 @@ const deviceRoutes = require('./routes/device.routes');
 const uploadRoutes = require('./routes/upload.routes');
 const adminRoutes = require('./routes/admin.routes');
 const cpfRoutes = require('./routes/cpf.routes');
+const inventoryRoutes = require('./routes/inventory.routes');
+const salesRoutes = require('./routes/sales.routes');
+const contractRoutes = require('./routes/contract.routes');
 
 const app = express();
 const PORT = process.env.PORT || 3001;
@@ -25,6 +28,8 @@ const allowedOrigins = [
   process.env.FRONTEND_URL,
   'http://localhost:3000',
   'http://localhost:3001',
+  'http://localhost:3002',
+  'http://localhost:3003',
 ].filter(Boolean);
 
 app.use(cors({
@@ -72,6 +77,9 @@ app.use('/api/device', deviceRoutes);
 app.use('/api/upload', uploadRoutes);
 app.use('/api/admin', adminRoutes);
 app.use('/api/admin/cpf', cpfRoutes);
+app.use('/api/inventory', inventoryRoutes);
+app.use('/api/sales', salesRoutes);
+app.use('/api/contracts', contractRoutes);
 
 // ============ HEALTH CHECK ============
 app.get('/api/health', async (req, res) => {

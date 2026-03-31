@@ -1,0 +1,12 @@
+{
+  "name": "gleikstore-site",
+  "version": "1.0.0",
+  "private": true,
+  "scripts": {
+    "dev:frontend": "npm run dev --prefix frontend",
+    "dev:backend": "npm run dev --prefix backend",
+    "dev": "npm run dev --prefix backend & npm run dev --prefix frontend",
+    "install:all": "npm install --prefix frontend",
+    "build:all": "npm run build --prefix frontend"
+  }
+}

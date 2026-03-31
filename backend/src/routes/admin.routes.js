@@ -132,4 +132,72 @@ router.post('/warranty', async (req, res) => {
   }
 });
 
+/**
+ * GET /api/admin/customer/:cpf
+ * Busca um cliente pelo CPF
+ */
+router.get('/customer/:cpf', async (req, res) => {
+  try {
+    const { cpf } = req.params;
+    const user = await prisma.user.findUnique({
+      where: { cpf },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        cpf: true,
+        phone: true,
+        address: true,
+      }
+    });
+
+    if (!user) {
+      return res.status(404).json({
+        error: true,
+        message: 'Cliente não encontrado',
+      });
+    }
+
+    return res.json({ user });
+  } catch (error) {
+    console.error('Erro em GET /api/admin/customer/:cpf:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Erro ao buscar cliente',
+    });
+  }
+});
+
+/**
+ * GET /api/admin/customers
+ * Lista todos os clientes cadastrados
+ */
+router.get('/customers', async (req, res) => {
+  try {
+    const customers = await prisma.user.findMany({
+      where: { role: 'CUSTOMER' },
+      select: {
+        id: true,
+        name: true,
+        email: true,
+        cpf: true,
+        phone: true,
+        createdAt: true,
+        _count: {
+          select: { sales: true }
+        }
+      },
+      orderBy: { createdAt: 'desc' }
+    });
+
+    return res.json({ customers });
+  } catch (error) {
+    console.error('Erro em GET /api/admin/customers:', error);
+    return res.status(500).json({
+      error: true,
+      message: 'Erro ao buscar clientes',
+    });
+  }
+});
+
 module.exports = router;

@@ -22,7 +22,7 @@ export function Footer() {
             </p>
             <div className="text-sm text-zinc-500 space-y-1">
               <p>CNPJ: 62.282.270/0001-90</p>
-              <p>Rua Treze, Bairro Operário</p>
+              <p>Rua Treze - Água Boa, MT</p>
             </div>
           </div>
 
