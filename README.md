@@ -1,10 +1,10 @@
-# 💎 Gleikstore - The Apple Era of Device Management
+# Gleikstore 
 
-Gleikstore é uma plataforma digital de alta performance desenvolvida para redefinir a experiência de aquisição e gestão de dispositivos premium. Combinando uma estética minimalista ("Luxury Dark Mode") com uma infraestrutura robusta, a plataforma atende tanto o consumidor final quanto a gestão administrativa de elite.
+Gleikstore é uma plataforma digital de alta performance desenvolvida para redefinir a experiência de aquisição e gestão de dispositivos premium. Combinando uma estética minimalista ("Luxury Dark Mode") com uma infraestrutura robusta, a plataforma atende tanto o consumidor final quanto a gestão administrativa.
 
 ---
 
-## 🚀 Capacidades da Plataforma
+## Capacidades da Plataforma
 
 ### 1. Showroom Digital & Catálogo "Flagship"
 - **Experiência Visual Imersiva**: Interface inspirada nos padrões de design da Apple, Nothing e Tesla, utilizando Next.js 15 e Tailwind v4 para transições fluidas.
@@ -56,3 +56,4 @@ A arquitetura da Gleikstore foi construída sobre os pilares da segurança moder
 ---
 
 © 2024 Gleikstore. Desenvolvido para a Excelência.
+By: [Marcio Gleik](https://www.linkedin.com/in/marciogleikdev/)
