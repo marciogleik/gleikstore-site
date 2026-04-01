@@ -15,6 +15,8 @@ const IPHONE_MODELS = [
   'iPhone 15', 'iPhone 15 Plus', 'iPhone 15 Pro', 'iPhone 15 Pro Max',
   'iPhone 16', 'iPhone 16 Plus', 'iPhone 16 Pro', 'iPhone 16 Pro Max',
   'iPhone 17', 'iPhone 17 Plus', 'iPhone 17 Pro', 'iPhone 17 Pro Max',
+  'Apple Watch Ultra 2', 'Apple Watch Series 10',
+  'iPad Pro M4', 'iPad Air M2',
 ]
 
 export default function ContractsPage() {
@@ -22,6 +24,7 @@ export default function ContractsPage() {
   const [contract, setContract] = useState<any>(null)
   const [isLoading, setIsLoading] = useState(true)
   const [selectedModel, setSelectedModel] = useState('')
+  const [customModel, setCustomModel] = useState('')
   const [signature, setSignature] = useState('')
   const [isSigning, setIsSigning] = useState(false)
   const [message, setMessage] = useState({ type: '', text: '' })
@@ -39,7 +42,12 @@ export default function ContractsPage() {
       setUser(userRes.user)
       setContract(contractRes)
       if (contractRes?.modelName) {
-        setSelectedModel(contractRes.modelName)
+        if (IPHONE_MODELS.includes(contractRes.modelName)) {
+           setSelectedModel(contractRes.modelName)
+        } else {
+           setSelectedModel('OUTRO')
+           setCustomModel(contractRes.modelName)
+        }
       }
       if (contractRes?.signature) {
           setSignature(contractRes.signature)
@@ -52,8 +60,10 @@ export default function ContractsPage() {
   }
 
   const handleSign = async () => {
-    if (!selectedModel) {
-      setMessage({ type: 'error', text: 'Por favor, selecione o modelo do aparelho.' })
+    const finalModel = selectedModel === 'OUTRO' ? customModel : selectedModel
+
+    if (!finalModel) {
+      setMessage({ type: 'error', text: 'Por favor, selecione ou digite o modelo do aparelho.' })
       return
     }
     if (!signature.trim()) {
@@ -65,7 +75,7 @@ export default function ContractsPage() {
     setMessage({ type: '', text: '' })
 
     try {
-      const updatedContract = await signDigitalContract(selectedModel, signature)
+      const updatedContract = await signDigitalContract(finalModel, signature)
       setContract(updatedContract)
       setMessage({ type: 'success', text: 'Contrato assinado digitalmente com sucesso!' })
     } catch (error) {
@@ -136,8 +146,25 @@ export default function ContractsPage() {
                   {IPHONE_MODELS.map(model => (
                     <option key={model} value={model}>{model}</option>
                   ))}
+                  <option value="OUTRO">Outro (Digitar modelo)</option>
                 </select>
               </div>
+
+              {selectedModel === 'OUTRO' && (
+                <div className="space-y-2 animate-in fade-in slide-in-from-top-1">
+                  <label className="text-sm font-medium text-zinc-300 flex items-center gap-2">
+                    <Smartphone className="w-4 h-4" /> Qual o seu modelo?
+                  </label>
+                  <input
+                    type="text"
+                    placeholder="Ex: iPhone 15 Pro Max 256GB"
+                    value={customModel}
+                    onChange={(e) => setCustomModel(e.target.value)}
+                    disabled={!!contract?.isDigital}
+                    className="w-full bg-zinc-950 border border-zinc-800 rounded-xl px-4 py-2.5 text-sm focus:outline-none focus:ring-2 focus:ring-white/10 disabled:opacity-50 transition-all placeholder:text-zinc-600"
+                  />
+                </div>
+              )}
 
               {!contract?.isDigital ? (
                 <div className="space-y-4 pt-4 border-t border-zinc-800">
@@ -209,7 +236,7 @@ export default function ContractsPage() {
                     </h4>
                     <p className="pl-4">
                       O objeto deste contrato é a venda de 01 (um) aparelho celular da marca Apple, 
-                      modelo <strong className="text-zinc-900">{selectedModel || ' [ SELECIONE O MODELO NO PAINEL LATERAL ] '}</strong>, 
+                      modelo <strong className="text-zinc-900">{selectedModel === 'OUTRO' ? customModel : selectedModel || ' [ SELECIONE O MODELO NO PAINEL LATERAL ] '}</strong>, 
                       original, em pleno funcionamento. O COMPRADOR declara ter ciência do estado físico do aparelho, 
                       tendo-o conferido no ato da entrega/recebimento.
                     </p>

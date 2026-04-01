@@ -133,7 +133,7 @@ export default function DocumentsPage() {
                         </p>
                       </div>
                       <a
-                        href={existingDoc.fileUrl}
+                        href={existingDoc.fileUrl || undefined}
                         target="_blank"
                         rel="noopener noreferrer"
                         className="text-sm text-white hover:underline"

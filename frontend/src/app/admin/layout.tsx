@@ -18,7 +18,7 @@ import {
     Activity,
     Bell
 } from 'lucide-react'
-import { getMe, removeToken } from '@/lib/api'
+import { getMe, logout } from '@/lib/api'
 import type { User as UserType } from '@/lib/api'
 
 export default function AdminLayout({
@@ -42,7 +42,7 @@ export default function AdminLayout({
         }
         setUser(response.user)
       } catch {
-        removeToken()
+        await logout()
         router.push('/login')
       } finally {
         setIsLoading(false)
@@ -52,8 +52,8 @@ export default function AdminLayout({
     checkAuth()
   }, [router])
 
-  const handleLogout = () => {
-    removeToken()
+  const handleLogout = async () => {
+    await logout()
     router.push('/login')
   }
 

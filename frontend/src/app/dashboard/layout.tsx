@@ -4,7 +4,7 @@ import { useEffect, useState } from 'react'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link'
 import { User, Smartphone, FileText, Camera, LogOut, Home, Shield, Search, ShoppingCart, Package, Menu, X as CloseIcon, Signature } from 'lucide-react'
-import { getMe, removeToken } from '@/lib/api'
+import { getMe, logout } from '@/lib/api'
 import type { User as UserType } from '@/lib/api'
 
 export default function DashboardLayout({
@@ -23,7 +23,7 @@ export default function DashboardLayout({
         const response = await getMe()
         setUser(response.user)
       } catch {
-        removeToken()
+        await logout()
         router.push('/login')
       } finally {
         setIsLoading(false)
@@ -33,8 +33,8 @@ export default function DashboardLayout({
     checkAuth()
   }, [router])
 
-  const handleLogout = () => {
-    removeToken()
+  const handleLogout = async () => {
+    await logout()
     router.push('/login')
   }
 

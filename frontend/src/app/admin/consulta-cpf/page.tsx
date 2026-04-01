@@ -6,7 +6,6 @@ import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
 import { consultarCpf, getCpfHistory } from '@/lib/api'
-import { adminConsultarCpf } from '@/app/actions/admin-actions'
 import type { CpfConsultaResult, CpfConsultaHistoryItem } from '@/lib/api'
 import { formatCPF, formatDate } from '@/lib/utils'
 
@@ -90,29 +89,9 @@ export default function ConsultaCpfPage() {
 
         setIsLoading(true)
         try {
-            const res = await adminConsultarCpf(cpfClean)
-            if (res.success) {
-                // Map real API data to our UI model
-                const apiData = res.data
-                const mappedResult: CpfConsultaResult = {
-                    consulta: {
-                        cpf: cpfClean,
-                        name: apiData.nome_pessoa_fisica || apiData.nome || (res.cliente as any)?.name || 'Nome não consta no registro atual',
-                        status: apiData.situacao_cadastral || apiData.situacao || 'REGULAR',
-                        score: apiData.score || Math.floor(Math.random() * 400) + 400,
-                        hasPendencies: !!apiData.pendencias || false,
-                        pendencies: apiData.pendencias_detalhadas || [],
-                        consultedAt: new Date().toISOString(),
-                        rawData: apiData
-                    },
-                    cliente: res.cliente as any,
-                    isDemo: false
-                }
-                setResult(mappedResult)
-                await loadHistory()
-            } else {
-                setError(res.message || 'Erro ao consultar CPF')
-            }
+            const res = await consultarCpf(cpfClean)
+            setResult(res)
+            await loadHistory()
         } catch (e) {
             setError(e instanceof Error ? e.message : 'Erro ao consultar CPF')
         } finally {

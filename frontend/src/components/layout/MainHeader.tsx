@@ -2,8 +2,9 @@
 
 import { useEffect, useState } from 'react'
 import Link from 'next/link'
-import { getMe, removeToken } from '@/lib/api'
+import { getMe, logout } from '@/lib/api'
 import type { User } from '@/lib/api'
+import { supabase } from '@/lib/supabase'
 
 export function MainHeader() {
   const [user, setUser] = useState<User | null>(null)
@@ -15,23 +16,27 @@ export function MainHeader() {
         const response = await getMe()
         setUser(response.user)
       } catch {
-        removeToken()
+        await logout()
         setUser(null)
       } finally {
         setIsChecking(false)
       }
     }
 
-    // Só tenta buscar se existir token no localStorage
-    if (typeof window !== 'undefined' && localStorage.getItem('gleikstore_token')) {
-      check()
-    } else {
-      setIsChecking(false)
+    const checkSession = async () => {
+      const { data: { session } } = await supabase.auth.getSession()
+      if (session) {
+        check()
+      } else {
+        setIsChecking(false)
+      }
     }
+
+    checkSession()
   }, [])
 
-  const handleLogout = () => {
-    removeToken()
+  const handleLogout = async () => {
+    await logout()
     setUser(null)
   }
 

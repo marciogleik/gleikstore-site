@@ -5,9 +5,8 @@ import { Users, Search, Mail, Phone, ShoppingBag, ExternalLink, User, Key, Check
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
-import { getAdminCustomers, type User as Customer } from '@/lib/api'
+import { getAdminCustomers, adminChangeUserPassword, type User as Customer } from '@/lib/api'
 import { formatCPF, formatDate } from '@/lib/utils'
-import { adminChangeUserPassword } from '@/app/actions/admin-actions'
 
 type ExtendedCustomer = Customer & { _count: { sales: number } }
 

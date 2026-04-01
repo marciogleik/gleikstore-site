@@ -5,7 +5,7 @@ import { UserPlus, Shield, Mail, Lock, CheckCircle, AlertCircle } from 'lucide-r
 import { Button } from '@/components/ui/Button'
 import { Input } from '@/components/ui/Input'
 import { Card, CardHeader, CardTitle, CardDescription, CardContent } from '@/components/ui/Card'
-import { adminCreateUser } from '@/app/actions/admin-actions'
+import { adminCreateUser } from '@/lib/api'
 
 export default function SettingsPage() {
     const [formData, setFormData] = useState({
