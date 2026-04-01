@@ -1,200 +1,58 @@
-# Gleikstore - Plataforma Completa
+# 💎 Gleikstore - The Apple Era of Device Management
 
-Sistema completo para a marca Gleikstore - Loja de iPhones Premium.
+Gleikstore é uma plataforma digital de alta performance desenvolvida para redefinir a experiência de aquisição e gestão de dispositivos premium. Combinando uma estética minimalista ("Luxury Dark Mode") com uma infraestrutura robusta, a plataforma atende tanto o consumidor final quanto a gestão administrativa de elite.
 
-## 🏗️ Arquitetura
+---
 
-O projeto está dividido em duas partes:
+## 🚀 Capacidades da Plataforma
 
-```
-gleikstore-site/
-├── backend/          # API REST (Node.js + Express + Prisma)
-└── frontend/         # Interface (Next.js 15 + Tailwind CSS v4)
-```
+### 1. Showroom Digital & Catálogo "Flagship"
+- **Experiência Visual Imersiva**: Interface inspirada nos padrões de design da Apple, Nothing e Tesla, utilizando Next.js 15 e Tailwind v4 para transições fluidas.
+- **Catálogo Dinâmico**: Vitrine inteligente de dispositivos com integração direta para canais de fechamento (WhatsApp) e sistema de SEO otimizado.
 
-## 🚀 Quick Start
+### 2. Customer Intelligence Panel (Portal do Cliente)
+- **Gestão de Ativos em Tempo Real**: O cliente tem visibilidade total de seus dispositivos adquiridos, incluindo números de IMEI e status de garantia.
+- **Digital Contract Suite**: Sistema nativo de assinatura digital, permitindo a formalização de termos de compra e venda sem papel, com validade jurídica e autenticidade via UUID.
+- **Secure Document Vault**: Sistema de upload e gestão de documentos sensíveis (RG, CPF, comprovantes) protegidos por políticas de segurança Row Level Security (RLS).
+- **Personal Profile Optimization**: Gestão de dados pessoais e fotos de perfil com armazenamento em bucket seguro.
 
-### 1. Backend
+### 3. Elite Administrative Control (Painel Admin)
+- **Inventory Optimization**: Gestão avançada de estoque com rastreamento por IMEI, estado físico do aparelho (Novo/Seminovo) e histórico de entrada/saída.
+- **Sales & Provisioning**: Fluxo de venda que provisiona automaticamente o dispositivo para o painel do cliente no ato da confirmação.
+- **Warranty Guard**: Sistema de alerta e monitoramento automático de períodos de garantia, facilitando o suporte pós-venda.
+- **Customer 360 View**: Painel administrativo centralizado para auditoria de clientes, validação de documentos e histórico completo de transações.
+- **Advanced CPF Consultation**: Módulo integrado para consulta e verificação de CPF, garantindo leads qualificados e segurança nas transações.
 
-```bash
-cd backend
+---
 
-# Instalar dependências
-npm install
+## 🛠️ Especificações Técnicas (The Stack)
 
-# Configurar ambiente
-cp .env.example .env
-# Edite o .env com suas configurações de banco de dados
+### Core
+- **Framework**: [Next.js 15](https://nextjs.org/) (App Router Architecture)
+- **Library**: [React 19](https://react.dev/)
+- **Styling**: [Tailwind CSS v4](https://tailwindcss.com/) (High-performance JIT engine)
+- **Animations**: [Framer Motion](https://www.framer.com/motion/)
 
-# Gerar cliente Prisma
-npm run prisma:generate
+### Data & Infrastructure
+- **Backend-as-a-Service**: [Supabase](https://supabase.com/)
+- **Database**: PostgreSQL (Relational integrity)
+- **Storage**: Supabase Storage Buckets (Criptografia de documentos e mídia)
+- **Authentication**: Supabase Auth (JWT & Real-time protection)
+- **Programming Language**: [TypeScript](https://www.typescriptlang.org/) (Full-stack type safety)
 
-# Executar migrations
-npm run prisma:migrate
+### Design philosophy
+- **Minimalist Aesthetic**: Foco em espaços em branco (negative space), tipografia clean (Inter) e sombras suaves para uma sensação de profundidade e luxo.
+- **Performance First**: Otimização de imagens de próxima geração e carregamento dinâmico de componentes pesados.
 
-# Iniciar servidor
-npm run dev
-```
+---
 
-O backend estará rodando em `http://localhost:3001`
+## 🔐 Segurança & Governança de Dados
 
-### 2. Frontend
+A arquitetura da Gleikstore foi construída sobre os pilares da segurança moderna:
+- **Row Level Security (RLS)**: Cada dado no banco de dados é blindado, garantindo que usuários só acessem o que lhes pertence.
+- **File Encryption**: Documentos de identidade são armazenados em buckets privados, acessíveis apenas via links temporários assinados (Signed URLs).
+- **Audit Logs**: Rastreamento de atividades críticas tanto no portal do cliente quanto no painel administrativo.
 
-```bash
-cd frontend
+---
 
-# Instalar dependências
-npm install
-
-# Configurar ambiente
-cp .env.example .env.local
-# Edite o .env.local com a URL da API
-
-# Iniciar servidor de desenvolvimento
-npm run dev
-```
-
-O frontend estará rodando em `http://localhost:3000`
-
-## 📋 Funcionalidades
-
-### Landing Page
-- ✅ Navbar fixa premium com efeito ao rolar
-- ✅ Hero Section com imagem de iPhone
-- ✅ Seção de Diferenciais (6 cards)
-- ✅ Catálogo de produtos com botão WhatsApp
-- ✅ Seção Sobre a Gleikstore
-- ✅ Footer com informações da empresa
-- ✅ Botão flutuante do WhatsApp
-
-### Autenticação
-- ✅ Página de Login
-- ✅ Página de Registro
-- ✅ JWT Authentication
-- ✅ Proteção de rotas
-
-### Dashboard do Cliente
-- ✅ Dados Pessoais (editar nome, telefone, endereço)
-- ✅ Dados do Aparelho (modelo, IMEI, garantia)
-- ✅ Upload de Foto de Perfil
-- ✅ Upload de Documentos (RG, CPF, Comprovante, Contrato)
-
-## 🛠️ Tecnologias
-
-### Backend
-- Node.js + Express
-- Prisma ORM
-- PostgreSQL
-- JWT (jsonwebtoken)
-- Bcrypt
-- Multer (uploads)
-- Supabase Storage (opcional)
-
-### Frontend
-- Next.js 15 (App Router)
-- React 19
-- Tailwind CSS v4
-- Framer Motion
-- Lucide Icons
-- TypeScript
-
-## 🎨 Design
-
-Estilo premium inspirado em Apple/Nothing/Tesla:
-- Fundo preto (#000) e cinza escuro (#111)
-- Tipografia clean (Inter)
-- Muito espaço em branco
-- Animações suaves
-- Cards com bordas sutis
-
-## 📊 Banco de Dados
-
-### Modelos (Prisma)
-
-```prisma
-model User {
-  id        String   @id @default(uuid())
-  name      String
-  email     String   @unique
-  password  String
-  cpf       String   @unique
-  phone     String
-  address   String
-  createdAt DateTime @default(now())
-  updatedAt DateTime @updatedAt
-}
-
-model Device {
-  id           String   @id @default(uuid())
-  userId       String
-  model        String
-  imei         String
-  purchaseDate DateTime
-  warrantyEnd  DateTime
-}
-
-model Document {
-  id           String       @id @default(uuid())
-  userId       String
-  documentType DocumentType
-  fileUrl      String
-  uploadedAt   DateTime     @default(now())
-}
-
-model ProfilePhoto {
-  id         String   @id @default(uuid())
-  userId     String   @unique
-  fileUrl    String
-  uploadedAt DateTime @default(now())
-}
-```
-
-## 📡 API Endpoints
-
-### Autenticação
-- `POST /api/auth/register` - Criar conta
-- `POST /api/auth/login` - Login
-- `GET /api/auth/me` - Dados do usuário autenticado
-
-### Usuário
-- `GET /api/user` - Buscar dados
-- `PUT /api/user` - Atualizar dados
-
-### Dispositivos
-- `GET /api/device` - Listar dispositivos
-- `POST /api/device` - Adicionar dispositivo
-- `PUT /api/device/:id` - Atualizar dispositivo
-
-### Uploads
-- `POST /api/upload/profile-photo` - Foto de perfil
-- `POST /api/upload/document` - Documento
-- `POST /api/upload/contract` - Contrato
-- `GET /api/upload/documents` - Listar documentos
-
-## 🔐 Variáveis de Ambiente
-
-### Backend (.env)
-```env
-DATABASE_URL="postgresql://..."
-JWT_SECRET="sua-chave-secreta"
-JWT_EXPIRES_IN="7d"
-SUPABASE_URL="https://..."
-SUPABASE_SERVICE_KEY="..."
-PORT=3001
-FRONTEND_URL="http://localhost:3000"
-```
-
-### Frontend (.env.local)
-```env
-NEXT_PUBLIC_API_URL=http://localhost:3001/api
-NEXT_PUBLIC_WHATSAPP_NUMBER=5500000000000
-```
-
-## 📱 Informações da Empresa
-
-- **CNPJ:** 62.282.270/0001-90
-- **Endereço:** Rua Treze, Bairro Operário
-
-## 📄 Licença
-
-Projeto privado - Gleikstore © 2024
+© 2024 Gleikstore. Desenvolvido para a Excelência.
